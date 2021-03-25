@@ -1,4 +1,4 @@
-import { AccountModel } from 'domain/models/account-model'
+import { AccountModel } from '@/domain/models/account-model'
 
 export interface Authentication {
   auth(params: Authentication.Params): Promise<Authentication.Result>
