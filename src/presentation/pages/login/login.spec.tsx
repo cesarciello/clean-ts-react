@@ -52,18 +52,26 @@ describe('Name of the group', () => {
   })
 
   test('should show valid password state if Validation succeds', () => {
-    const { sut: { getByTestId }, validationSpy } = makeSut()
-    validationSpy.errorMessage = null
+    const { sut: { getByTestId } } = makeSut()
     const passwordInput = getByTestId('password')
     fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
     expect(getByTestId('password-input-container').childElementCount).toBe(1)
   })
 
   test('should show valid email state if Validation succeds', () => {
-    const { sut: { getByTestId }, validationSpy } = makeSut()
-    validationSpy.errorMessage = null
+    const { sut: { getByTestId } } = makeSut()
     const emailInput = getByTestId('email')
     fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
     expect(getByTestId('email-input-container').childElementCount).toBe(1)
+  })
+
+  test('should enable submit button if form is valid', () => {
+    const { sut: { getByTestId } } = makeSut()
+    const emailInput = getByTestId('email')
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+    const passwordInput = getByTestId('password')
+    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
+    const submitButton = getByTestId('submit') as HTMLButtonElement
+    expect(submitButton.disabled).toBe(false)
   })
 })
