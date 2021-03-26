@@ -1,8 +1,8 @@
 import React from 'react'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
 import faker from 'faker'
 import 'jest-localstorage-mock'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react'
 
 import Login from './login'
@@ -129,7 +129,7 @@ describe('Name of the group', () => {
     const errorWarp = getByTestId('error-wrap')
     await waitFor(() => errorWarp)
     expect(errorWarp.childElementCount).toBe(1)
-    expect(getByTestId('errorMessage').textContent).toBe(error.message)
+    expect(errorWarp.textContent).toBe(error.message)
   })
 
   test('should add access token to localstorage on success', async () => {
