@@ -28,22 +28,4 @@ describe('Name of the group', () => {
     const submitButton = getByTestId('submit') as HTMLButtonElement
     expect(submitButton.disabled).toBe(true)
   })
-
-  test('should call Validation with correct email', () => {
-    const { sut: { getByTestId }, validationSpy } = makeSut()
-    const emailInput = getByTestId('email')
-    const email = faker.internet.email()
-    fireEvent.input(emailInput, { target: { value: email } })
-    expect(validationSpy.fieldName).toBe('email')
-    expect(validationSpy.fieldValue).toBe(email)
-  })
-
-  test('should call Validation with correct password', () => {
-    const { sut: { getByTestId }, validationSpy } = makeSut()
-    const passwordInput = getByTestId('password')
-    const password = faker.internet.password()
-    fireEvent.input(passwordInput, { target: { value: password } })
-    expect(validationSpy.fieldName).toBe('password')
-    expect(validationSpy.fieldValue).toBe(password)
-  })
 })
