@@ -98,4 +98,12 @@ describe('Name of the group', () => {
     simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
     expect(authenticationSpy.callsCount).toBe(1)
   })
+
+  test('should call Authentication only once', () => {
+    const { sut: { getByTestId }, authenticationSpy, validationSpy } = makeSut()
+    validationSpy.errorMessage = 'error_password'
+    populateField('email', getByTestId, faker.internet.email())
+    fireEvent.submit(getByTestId('form'))
+    expect(authenticationSpy.callsCount).toBe(0)
+  })
 })
