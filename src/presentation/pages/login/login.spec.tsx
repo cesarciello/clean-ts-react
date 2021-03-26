@@ -42,10 +42,18 @@ describe('Name of the group', () => {
 
   test('should show password error if validation fails', () => {
     const { sut: { getByTestId }, validationSpy } = makeSut()
-    const passwordInput = getByTestId('password')
     validationSpy.errorMessage = 'error_password'
+    const passwordInput = getByTestId('password')
     fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
     const passwordError = getByTestId('password-error')
     expect(passwordError.textContent).toBe(validationSpy.errorMessage)
+  })
+
+  test('should show valid password state if Validation succeds', () => {
+    const { sut: { getByTestId }, validationSpy } = makeSut()
+    validationSpy.errorMessage = null
+    const passwordInput = getByTestId('password')
+    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
+    expect(getByTestId('password-input-container').childElementCount).toBe(1)
   })
 })
