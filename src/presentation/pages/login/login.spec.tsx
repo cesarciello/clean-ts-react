@@ -1,8 +1,9 @@
 import React from 'react'
 import faker from 'faker'
-import { render, RenderResult, fireEvent, cleanup } from '@testing-library/react'
+import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react'
 import Login from './login'
 import { ValidationSpy, AuthenticationSpy } from '@/presentation/test'
+import { InvalidCredentialsError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RenderResult
@@ -99,11 +100,22 @@ describe('Name of the group', () => {
     expect(authenticationSpy.callsCount).toBe(1)
   })
 
-  test('should call Authentication only once', () => {
+  test('should prevent subimit form on invalid params', () => {
     const { sut: { getByTestId }, authenticationSpy, validationSpy } = makeSut()
     validationSpy.errorMessage = 'error_password'
     populateField('email', getByTestId, faker.internet.email())
     fireEvent.submit(getByTestId('form'))
     expect(authenticationSpy.callsCount).toBe(0)
+  })
+
+  test('should present error if Authentication fails', async () => {
+    const { sut: { getByTestId }, authenticationSpy } = makeSut()
+    const error = new InvalidCredentialsError()
+    jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
+    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    const errorWarp = getByTestId('error-wrap')
+    await waitFor(() => errorWarp)
+    expect(errorWarp.childElementCount).toBe(1)
+    expect(getByTestId('errorMessage').textContent).toBe(error.message)
   })
 })
