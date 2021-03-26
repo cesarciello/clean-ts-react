@@ -46,4 +46,13 @@ describe('Name of the group', () => {
       email: 'any_mail'
     })
   })
+
+  test('should call Validation with correct password', () => {
+    const { sut: { getByTestId }, validationSpy } = makeSut()
+    const passwordInput = getByTestId('password')
+    fireEvent.input(passwordInput, { target: { value: 'any_password' } })
+    expect(validationSpy.input).toEqual({
+      password: 'any_password'
+    })
+  })
 })
