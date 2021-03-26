@@ -74,4 +74,12 @@ describe('Name of the group', () => {
     const submitButton = getByTestId('submit') as HTMLButtonElement
     expect(submitButton.disabled).toBe(false)
   })
+
+  test('should show spinner on submit', () => {
+    const { sut: { getByTestId } } = makeSut()
+    fireEvent.input(getByTestId('email'), { target: { value: faker.internet.email() } })
+    fireEvent.input(getByTestId('password'), { target: { value: faker.internet.password() } })
+    fireEvent.click(getByTestId('submit'))
+    expect(getByTestId('spinner')).toBeTruthy()
+  })
 })
