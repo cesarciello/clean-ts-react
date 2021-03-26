@@ -23,6 +23,7 @@
         "space-before-function-paren": "off",
         "react/jsx-uses-react": "error",
         "react/jsx-uses-vars": "error",
+        "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/strict-boolean-expressions": "off"
     }
 }
