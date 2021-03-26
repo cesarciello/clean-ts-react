@@ -5,10 +5,12 @@ import { Authentication } from '@/domain/usecases/authentication'
 export class AuthenticationSpy implements Authentication {
   email: string
   password: string
+  callsCount: number = 0
 
   async auth(params: Authentication.Params): Promise<AccountModel> {
     this.email = params.email
     this.password = params.password
+    this.callsCount++
     return Promise.resolve(mockAccountModel())
   }
 }

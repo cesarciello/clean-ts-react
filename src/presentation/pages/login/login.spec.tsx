@@ -91,4 +91,11 @@ describe('Name of the group', () => {
     expect(authenticationSpy.email).toBe(email)
     expect(authenticationSpy.password).toBe(password)
   })
+
+  test('should call Authentication only once', () => {
+    const { sut: { getByTestId }, authenticationSpy } = makeSut()
+    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    expect(authenticationSpy.callsCount).toBe(1)
+  })
 })
