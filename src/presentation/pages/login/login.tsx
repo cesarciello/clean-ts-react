@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
+
 import Styles from './login-styles.scss'
 import { Authentication } from '@/domain/usecases/authentication'
 import { Validation } from '@/presentation/protocols/validation'
-import { Footer, LoginHeader, Input, FormStatusLogin } from '@/presentation/components'
 import Context from '@/presentation/context/form-login/form-login-context'
+import { Footer, LoginHeader, Input, FormStatusLogin } from '@/presentation/components'
 
 type StateProps = {
   isLoading: boolean
@@ -72,7 +74,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
           <Input type="email" name="email" placeholder="Digite seu email" />
           <Input type="password" name="password" placeholder="Digite sua senha" />
           <button disabled={(!!state.emailError || !!state.passwordError) || (!state.email || !state.password)} className={Styles.submit} data-testid="submit" type="submit">Entrar</button>
-          <span className={Styles.link}>criar Conta</span>
+          <Link to="/singup" data-testid="singup" className={Styles.link}>criar Conta</Link>
           <FormStatusLogin />
         </form>
       </Context.Provider>
