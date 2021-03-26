@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './login-styles.scss'
-import Context from '@/presentation/context/form-login/form-login-context'
-import { Footer, LoginHeader, Input, FormStatusLogin } from '@/presentation/components'
+import { Authentication } from '@/domain/usecases/authentication'
 import { Validation } from '@/presentation/protocols/validation'
+import { Footer, LoginHeader, Input, FormStatusLogin } from '@/presentation/components'
+import Context from '@/presentation/context/form-login/form-login-context'
 
 type StateProps = {
   isLoading: boolean
@@ -15,9 +16,10 @@ type StateProps = {
 
 type Props = {
   validation: Validation
+  authentication: Authentication
 }
 
-const Login: React.FC<Props> = ({ validation }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const [state, setState] = useState<StateProps>({
     isLoading: false,
     errorMessage: '',
@@ -37,11 +39,15 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     })
   }, [state.email, state.password])
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     setState({
       ...state,
       isLoading: true
+    })
+    await authentication.auth({
+      email: state.email,
+      password: state.password
     })
   }
 
