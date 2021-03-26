@@ -6,6 +6,7 @@ type Props = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>
 
 const Input: React.FC<Props> = (props: Props) => {
   const { state, setState } = useContext(Context)
+  const error = state[`${props.name}Error`]
   const handleChange = (event: React.FocusEvent<HTMLInputElement>): void => {
     setState({
       ...state,
@@ -13,7 +14,10 @@ const Input: React.FC<Props> = (props: Props) => {
     })
   }
   return (
-    <input {...props} data-testid={props.name} className={Styles.input} onChange={handleChange} />
+    <div data-testid={`${props.name}-input-container`} className={Styles.inputContainer} >
+      <input {...props} data-testid={props.name} className={Styles.input} onChange={handleChange} />
+      {error && <p className={Styles.errorInputMessage} data-testid={`${props.name}-error`} >{error}</p>}
+    </div>
   )
 }
 

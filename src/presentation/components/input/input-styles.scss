@@ -1,11 +1,21 @@
 @import '../../styles/colors.scss';
 
-.input {
-    border: 1px solid $primaryLight;
-    line-height: 3.4rem;
-    border-radius: .3rem;
+.inputContainer {
+    display: flex;
+    flex-direction: column;
 
-    &:focus {
-        outline-color: $primaryLight;
+    .input {
+        border: 1px solid $primaryLight;
+        line-height: 3.4rem;
+        border-radius: .3rem;
+
+        &:focus {
+            outline-color: $primaryLight;
+        }
+    }
+
+    .errorInputMessage {
+        margin: 0.5rem 0.3rem 0;
+        color: #bc487b;
     }
 }

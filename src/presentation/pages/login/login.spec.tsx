@@ -1,6 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import { render, RenderResult, fireEvent, cleanup } from '@testing-library/react'
+import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react'
 import Login from './login'
 import { ValidationSpy } from '@/presentation/test'
 
@@ -27,5 +27,25 @@ describe('Name of the group', () => {
     expect(errorWrap.childElementCount).toBe(0)
     const submitButton = getByTestId('submit') as HTMLButtonElement
     expect(submitButton.disabled).toBe(true)
+    expect(getByTestId('password-input-container').childElementCount).toBe(1)
+    expect(getByTestId('email-input-container').childElementCount).toBe(1)
+  })
+
+  test('should show email error if validation fails', () => {
+    const { sut: { getByTestId }, validationSpy } = makeSut()
+    const emailInput = getByTestId('email')
+    validationSpy.errorMessage = 'error_email'
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+    const emailError = getByTestId('email-error')
+    expect(emailError.textContent).toBe(validationSpy.errorMessage)
+  })
+
+  test('should show password error if validation fails', () => {
+    const { sut: { getByTestId }, validationSpy } = makeSut()
+    const passwordInput = getByTestId('password')
+    validationSpy.errorMessage = 'error_password'
+    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
+    const passwordError = getByTestId('password-error')
+    expect(passwordError.textContent).toBe(validationSpy.errorMessage)
   })
 })

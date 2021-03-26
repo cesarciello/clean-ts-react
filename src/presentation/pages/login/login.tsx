@@ -9,6 +9,8 @@ type StateProps = {
   errorMessage: string
   email: string
   password: string
+  emailError: string
+  passwordError: string
 }
 
 type Props = {
@@ -19,14 +21,19 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
   const [state, setState] = useState<StateProps>({
     isLoading: false,
     errorMessage: '',
+    emailError: '',
+    passwordError: '',
     email: '',
     password: ''
   })
 
   useEffect(() => {
+    const validEmail = validation.validate('email', state.email)
+    const validPassword = validation.validate('password', state.password)
     setState({
       ...state,
-      errorMessage: `${validation.validate('email', state.email)}\t${validation.validate('password', state.password)}`
+      emailError: validEmail,
+      passwordError: validPassword
     })
   }, [state.email, state.password])
 
