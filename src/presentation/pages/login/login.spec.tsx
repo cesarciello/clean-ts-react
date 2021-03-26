@@ -3,18 +3,36 @@ import faker from 'faker'
 import { render, RenderResult, fireEvent, cleanup } from '@testing-library/react'
 import Login from './login'
 import { ValidationSpy } from '@/presentation/test'
+import { AccountModel } from '@/domain/models/account-model'
+import { Authentication } from '@/domain/usecases/authentication'
 
 type SutTypes = {
   sut: RenderResult
   validationSpy: ValidationSpy
+  authenticationSpy: AuthenticationSpy
+}
+
+class AuthenticationSpy implements Authentication {
+  email: string
+  password: string
+
+  async auth(params: Authentication.Params): Promise<AccountModel> {
+    this.email = params.email
+    this.password = params.password
+    return Promise.resolve({
+      accessToken: ''
+    })
+  }
 }
 
 const makeSut = (): SutTypes => {
+  const authenticationSpy = new AuthenticationSpy()
   const validationSpy = new ValidationSpy()
-  const sut = render(<Login validation={validationSpy} />)
+  const sut = render(<Login validation={validationSpy} authentication={authenticationSpy} />)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    authenticationSpy
   }
 }
 
@@ -81,5 +99,16 @@ describe('Name of the group', () => {
     fireEvent.input(getByTestId('password'), { target: { value: faker.internet.password() } })
     fireEvent.click(getByTestId('submit'))
     expect(getByTestId('spinner')).toBeTruthy()
+  })
+
+  test('should call Authentication with correct values', () => {
+    const { sut: { getByTestId }, authenticationSpy } = makeSut()
+    const emailValue = faker.internet.email()
+    const passwordValue = faker.internet.password()
+    fireEvent.input(getByTestId('email'), { target: { value: emailValue } })
+    fireEvent.input(getByTestId('password'), { target: { value: passwordValue } })
+    fireEvent.click(getByTestId('submit'))
+    expect(authenticationSpy.email).toBe(emailValue)
+    expect(authenticationSpy.password).toBe(passwordValue)
   })
 })
