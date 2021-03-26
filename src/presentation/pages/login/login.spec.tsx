@@ -1,6 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react'
+import { render, RenderResult, fireEvent, cleanup } from '@testing-library/react'
 import Login from './login'
 import { ValidationSpy } from '@/presentation/test'
 
@@ -35,8 +35,9 @@ describe('Name of the group', () => {
     const { sut: { getByTestId }, validationSpy } = makeSut()
     const emailInput = getByTestId('email')
     validationSpy.errorMessage = 'error_email'
-    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+    fireEvent.input(emailInput, { target: { value: faker.random.word() } })
     const emailError = getByTestId('email-error')
+    expect(getByTestId('email-input-container').childElementCount).toBe(2)
     expect(emailError.textContent).toBe(validationSpy.errorMessage)
   })
 
@@ -44,8 +45,9 @@ describe('Name of the group', () => {
     const { sut: { getByTestId }, validationSpy } = makeSut()
     validationSpy.errorMessage = 'error_password'
     const passwordInput = getByTestId('password')
-    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
+    fireEvent.input(passwordInput, { target: { value: faker.random.word() } })
     const passwordError = getByTestId('password-error')
+    expect(getByTestId('password-input-container').childElementCount).toBe(2)
     expect(passwordError.textContent).toBe(validationSpy.errorMessage)
   })
 
@@ -55,5 +57,13 @@ describe('Name of the group', () => {
     const passwordInput = getByTestId('password')
     fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
     expect(getByTestId('password-input-container').childElementCount).toBe(1)
+  })
+
+  test('should show valid email state if Validation succeds', () => {
+    const { sut: { getByTestId }, validationSpy } = makeSut()
+    validationSpy.errorMessage = null
+    const emailInput = getByTestId('email')
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+    expect(getByTestId('email-input-container').childElementCount).toBe(1)
   })
 })
