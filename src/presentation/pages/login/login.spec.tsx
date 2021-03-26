@@ -15,7 +15,7 @@ type SutTypes = {
   authenticationSpy: AuthenticationSpy
 }
 
-const history = createMemoryHistory()
+const history = createMemoryHistory({ initialEntries: ['/login'] })
 
 const makeSut = (): SutTypes => {
   const authenticationSpy = new AuthenticationSpy()
@@ -137,6 +137,14 @@ describe('Name of the group', () => {
     simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
     await waitFor(() => getByTestId('form'))
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+  })
+
+  test('should navigate to main page on success', async () => {
+    const { sut: { getByTestId } } = makeSut()
+    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    await waitFor(() => getByTestId('form'))
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
   })
 
   test('should go to sigup page', () => {
