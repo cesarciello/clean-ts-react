@@ -8,10 +8,10 @@ type SutTypes = {
   fieldValidationsSpy: FieldValidationSpy[]
 }
 
-const makeSut = (): SutTypes => {
+const makeSut = (field: string): SutTypes => {
   const fieldValidationsSpy = [
-    new FieldValidationSpy('any_field'),
-    new FieldValidationSpy('any_field')
+    new FieldValidationSpy(field),
+    new FieldValidationSpy(field)
   ]
   const sut = new ValidationComposite(fieldValidationsSpy)
   return {
@@ -22,10 +22,19 @@ const makeSut = (): SutTypes => {
 
 describe('ValidationComposite', () => {
   test('should return error if any validation fails', () => {
-    const { sut, fieldValidationsSpy } = makeSut()
-    fieldValidationsSpy[0].error = new Error('first_error_message')
-    fieldValidationsSpy[1].error = new Error('second_error_message')
-    const error = sut.validate('any_field', 'any_value')
-    expect(error).toEqual(new Error('first_error_message').message)
+    const field = faker.database.column()
+    const errorMessage = faker.random.words()
+    const { sut, fieldValidationsSpy } = makeSut(field)
+    fieldValidationsSpy[0].error = new Error(errorMessage)
+    fieldValidationsSpy[1].error = new Error(faker.random.words())
+    const error = sut.validate(field, faker.random.word())
+    expect(error).toEqual(new Error(errorMessage).message)
+  })
+
+  test('should return error if any validation fails', () => {
+    const field = faker.database.column()
+    const { sut } = makeSut(field)
+    const error = sut.validate(field, faker.random.word())
+    expect(error).toBeFalsy()
   })
 })
