@@ -3,7 +3,7 @@ import faker from 'faker'
 import { MinLengthValidation } from './min-length-validation'
 import { MinLengthError } from '@/validation/error/min-length-error'
 
-const makeSut = (): MinLengthValidation => new MinLengthValidation(faker.database.collation(), 1)
+const makeSut = (): MinLengthValidation => new MinLengthValidation(faker.database.column(), 1)
 
 describe('MinLengthValidation', () => {
   test('should return error if value is invalid', () => {
