@@ -139,6 +139,17 @@ describe('LoginPage', () => {
     expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
   })
 
+  test('should present error if SaveAccessToken fails', async () => {
+    const { sut: { getByTestId }, saveAccessTokenMock } = makeSut()
+    const error = new Error('any_message')
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    const errorWarp = getByTestId('error-wrap')
+    await waitFor(() => errorWarp)
+    expect(errorWarp.childElementCount).toBe(1)
+    expect(errorWarp.textContent).toBe(error.message)
+  })
+
   test('should navigate to main page on success', async () => {
     const { sut: { getByTestId } } = makeSut()
     simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
