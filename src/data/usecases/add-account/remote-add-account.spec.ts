@@ -5,7 +5,7 @@ import { mockAddAccountParams } from '@/domain/test'
 import { RemoteAddAccount } from './remote-add-account'
 import { AddAccount } from '@/domain/usecases/add-account'
 import { HttpStatusCode } from '@/data/protocols/http'
-import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
+import { InvalidCredentialsError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RemoteAddAccount
@@ -34,6 +34,18 @@ describe('RemoteAddAccount', () => {
     const addAccountParams = mockAddAccountParams()
     await sut.add(addAccountParams)
     expect(httpPostClientSpy.body).toEqual(addAccountParams)
+  })
+
+  test('should return AccessToken on sucess', async () => {
+    const { sut, httpPostClientSpy } = makeSut()
+    httpPostClientSpy.httpResponse = {
+      statusCode: HttpStatusCode.success,
+      body: {
+        accessToken: faker.random.uuid()
+      }
+    }
+    const httpResponse = await sut.add(mockAddAccountParams())
+    expect(httpResponse.accessToken).toBeTruthy()
   })
 
   test('should throw InvalidCredentialsError if HttpPostClient returns 401', async () => {
