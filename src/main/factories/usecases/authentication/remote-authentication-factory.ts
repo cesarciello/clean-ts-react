@@ -3,5 +3,5 @@ import { makeAxiosHttpClientFactory } from '@/main/factories/http/axios-http-cli
 import { RemoteAuthentication } from '@/data/usecases/authentication/remote-authentication'
 
 export const makeRemoteAuthenticatioFactory = (): RemoteAuthentication => {
-  return new RemoteAuthentication(makeApiUrlFactory(), makeAxiosHttpClientFactory())
+  return new RemoteAuthentication(makeApiUrlFactory('/login'), makeAxiosHttpClientFactory())
 }
