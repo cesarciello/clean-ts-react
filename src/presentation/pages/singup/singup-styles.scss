@@ -1,0 +1,56 @@
+@import '../../styles/colors.scss';
+
+.singup {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        width: 30rem;
+        justify-content: center;
+        background-color: $white;
+        padding: 1.5rem 2.4rem;
+        border-radius: .5rem;
+        align-self: center;
+
+        h2 {
+            color: $primaryDark;
+            text-align: center;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        input {
+            padding: 0 .5rem;
+            margin-top: 1.2rem;
+        }
+
+        .submit {
+            margin-top: 2.3rem;
+
+            &:disabled {
+                background-color: $disabledBackground;
+                color: $disabledColor;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .link {
+            text-align: center;
+            color: $primary;
+            text-transform: lowercase;
+            margin-top: 1.2rem;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
