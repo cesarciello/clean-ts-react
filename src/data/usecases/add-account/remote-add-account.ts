@@ -14,8 +14,8 @@ export class RemoteAddAccount implements AddAccount {
       body: params
     })
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.success: return httpResponse.body
       case HttpStatusCode.unauthorized: throw new InvalidCredentialsError()
     }
-    return null
   }
 }
