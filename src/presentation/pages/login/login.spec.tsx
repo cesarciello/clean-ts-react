@@ -6,7 +6,7 @@ import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-libr
 
 import Login from './login'
 import { InvalidCredentialsError } from '@/domain/errors'
-import { ValidationSpy, AuthenticationSpy, SaveAccessTokenMock } from '@/presentation/test'
+import { ValidationSpy, AuthenticationSpy, SaveAccessTokenMock, Helper } from '@/presentation/test'
 
 type SutTypes = {
   sut: RenderResult
@@ -34,14 +34,6 @@ const makeSut = (): SutTypes => {
   }
 }
 
-const populateField = (fieldName: string, getByTestId: Function, value: string): boolean => fireEvent.input(getByTestId(fieldName), { target: { value } })
-
-const simulateValidSubmit = (getByTestId: Function, email: string, password: string): void => {
-  populateField('email', getByTestId, email)
-  populateField('password', getByTestId, password)
-  fireEvent.click(getByTestId('submit'))
-}
-
 describe('LoginPage', () => {
   afterEach(cleanup)
 
@@ -57,7 +49,7 @@ describe('LoginPage', () => {
   test('should show email error if validation fails', () => {
     const { sut: { getByTestId }, validationSpy } = makeSut()
     validationSpy.errorMessage = 'error_email'
-    populateField('email', getByTestId, faker.random.word())
+    Helper.populateField('email', getByTestId, faker.random.word())
     expect(getByTestId('email-input-container').childElementCount).toBe(2)
     expect(getByTestId('email-error').textContent).toBe(validationSpy.errorMessage)
   })
@@ -65,34 +57,34 @@ describe('LoginPage', () => {
   test('should show password error if validation fails', () => {
     const { sut: { getByTestId }, validationSpy } = makeSut()
     validationSpy.errorMessage = 'error_password'
-    populateField('password', getByTestId, faker.random.word())
+    Helper.populateField('password', getByTestId, faker.random.word())
     expect(getByTestId('password-input-container').childElementCount).toBe(2)
     expect(getByTestId('password-error').textContent).toBe(validationSpy.errorMessage)
   })
 
   test('should show valid password state if Validation succeds', () => {
     const { sut: { getByTestId } } = makeSut()
-    populateField('password', getByTestId, faker.internet.password())
+    Helper.populateField('password', getByTestId, faker.internet.password())
     expect(getByTestId('password-input-container').childElementCount).toBe(1)
   })
 
   test('should show valid email state if Validation succeds', () => {
     const { sut: { getByTestId } } = makeSut()
-    populateField('email', getByTestId, faker.internet.email())
+    Helper.populateField('email', getByTestId, faker.internet.email())
     expect(getByTestId('email-input-container').childElementCount).toBe(1)
   })
 
   test('should enable submit button if form is valid', () => {
     const { sut: { getByTestId } } = makeSut()
-    populateField('email', getByTestId, faker.internet.email())
-    populateField('password', getByTestId, faker.internet.password())
+    Helper.populateField('email', getByTestId, faker.internet.email())
+    Helper.populateField('password', getByTestId, faker.internet.password())
     const submitButton = getByTestId('submit') as HTMLButtonElement
     expect(submitButton.disabled).toBe(false)
   })
 
   test('should show spinner on submit', () => {
     const { sut: { getByTestId } } = makeSut()
-    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    Helper.simulateValidSubmitLogin(getByTestId, faker.internet.email(), faker.internet.password())
     expect(getByTestId('spinner')).toBeTruthy()
   })
 
@@ -100,22 +92,22 @@ describe('LoginPage', () => {
     const { sut: { getByTestId }, authenticationSpy } = makeSut()
     const email = faker.internet.email()
     const password = faker.internet.password()
-    simulateValidSubmit(getByTestId, email, password)
+    Helper.simulateValidSubmitLogin(getByTestId, email, password)
     expect(authenticationSpy.email).toBe(email)
     expect(authenticationSpy.password).toBe(password)
   })
 
   test('should call Authentication only once', () => {
     const { sut: { getByTestId }, authenticationSpy } = makeSut()
-    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
-    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    Helper.simulateValidSubmitLogin(getByTestId, faker.internet.email(), faker.internet.password())
+    Helper.simulateValidSubmitLogin(getByTestId, faker.internet.email(), faker.internet.password())
     expect(authenticationSpy.callsCount).toBe(1)
   })
 
   test('should prevent subimit form on invalid params', () => {
     const { sut: { getByTestId }, authenticationSpy, validationSpy } = makeSut()
     validationSpy.errorMessage = 'error_password'
-    populateField('email', getByTestId, faker.internet.email())
+    Helper.populateField('email', getByTestId, faker.internet.email())
     fireEvent.submit(getByTestId('form'))
     expect(authenticationSpy.callsCount).toBe(0)
   })
@@ -124,7 +116,7 @@ describe('LoginPage', () => {
     const { sut: { getByTestId }, authenticationSpy } = makeSut()
     const error = new InvalidCredentialsError()
     jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
-    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    Helper.simulateValidSubmitLogin(getByTestId, faker.internet.email(), faker.internet.password())
     const errorWarp = getByTestId('error-wrap')
     await waitFor(() => errorWarp)
     expect(errorWarp.childElementCount).toBe(1)
@@ -133,7 +125,7 @@ describe('LoginPage', () => {
 
   test('should call SaveAccessToken with correct values', async () => {
     const { sut: { getByTestId }, authenticationSpy, saveAccessTokenMock } = makeSut()
-    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    Helper.simulateValidSubmitLogin(getByTestId, faker.internet.email(), faker.internet.password())
     saveAccessTokenMock.accessToken = authenticationSpy.account.accessToken
     await waitFor(() => getByTestId('form'))
     expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
@@ -143,7 +135,7 @@ describe('LoginPage', () => {
     const { sut: { getByTestId }, saveAccessTokenMock } = makeSut()
     const error = new Error('any_message')
     jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
-    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    Helper.simulateValidSubmitLogin(getByTestId, faker.internet.email(), faker.internet.password())
     const errorWarp = getByTestId('error-wrap')
     await waitFor(() => errorWarp)
     expect(errorWarp.childElementCount).toBe(1)
@@ -152,7 +144,7 @@ describe('LoginPage', () => {
 
   test('should navigate to main page on success', async () => {
     const { sut: { getByTestId } } = makeSut()
-    simulateValidSubmit(getByTestId, faker.internet.email(), faker.internet.password())
+    Helper.simulateValidSubmitLogin(getByTestId, faker.internet.email(), faker.internet.password())
     await waitFor(() => getByTestId('form'))
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
