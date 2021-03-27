@@ -25,9 +25,10 @@ const makeSut = (): SutTypes => {
 
 describe('ValidationComposite', () => {
   test('should return error if any validation fails', () => {
-    const { sut, fieldValidationSpy2 } = makeSut()
-    fieldValidationSpy2.error = new Error('any_message')
+    const { sut, fieldValidationSpy, fieldValidationSpy2 } = makeSut()
+    fieldValidationSpy.error = new Error('first_error_message')
+    fieldValidationSpy2.error = new Error('second_error_message')
     const error = sut.validate('any_field', 'any_value')
-    expect(error).toEqual(new Error('any_message').message)
+    expect(error).toEqual(new Error('first_error_message').message)
   })
 })
