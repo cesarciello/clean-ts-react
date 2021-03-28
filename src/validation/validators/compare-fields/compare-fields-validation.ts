@@ -8,11 +8,6 @@ export class CompareFieldsValidation implements FieldValidation {
   ) { }
 
   validate(input: object): Error {
-    console.log({
-      input,
-      field: this.field,
-      fieldToCompare: this.fieldToCompare
-    })
     if (input[this.field] !== input[this.fieldToCompare]) {
       return new InavlidFieldError(this.field)
     }

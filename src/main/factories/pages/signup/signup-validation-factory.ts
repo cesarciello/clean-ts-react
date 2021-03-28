@@ -1,6 +1,6 @@
 import { ValidationBuilder, ValidationComposite } from '@/validation/validators'
 
-export const makeSingUpValidationFactory = (): ValidationComposite => {
+export const makeSignUpValidationFactory = (): ValidationComposite => {
   return new ValidationComposite([
     ...ValidationBuilder.field('name').required().min(10).build(),
     ...ValidationBuilder.field('email').required().email().build(),

@@ -1,7 +1,7 @@
 import { Link, useHistory } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 
-import Styles from './singup-styles.scss'
+import Styles from './signup-styles.scss'
 import Context from '@/presentation/context/form-login/form-login-context'
 import { Footer, LoginHeader, Input, FormStatusLogin, SubmitButton } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
@@ -28,7 +28,7 @@ type Props = {
   saveAccessToken: SaveAccessToken
 }
 
-const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Props) => {
   const history = useHistory()
 
   const [state, setState] = useState<StateProps>({
@@ -90,11 +90,11 @@ const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
   }
 
   return (
-    <div className={Styles.singup}>
+    <div className={Styles.signup}>
       <LoginHeader />
       <Context.Provider value={{ state, setState }}>
         <form data-testid="form" className={Styles.form} onSubmit={handleSubmit}>
-          <h2>SingUp</h2>
+          <h2>SignUp</h2>
           <Input type="text" name="name" placeholder="Digite seu nome" />
           <Input type="email" name="email" placeholder="Digite seu email" />
           <Input type="password" name="password" placeholder="Digite sua senha" />
@@ -109,4 +109,4 @@ const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
   )
 }
 
-export default SingUp
+export default SignUp

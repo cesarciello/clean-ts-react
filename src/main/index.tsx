@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom'
 import { Router } from '@/presentation/components'
 import '@/presentation/styles/global.scss'
 import { makeLoginPageFactory } from './factories/pages/login/login-factory'
-import { makeSingUpPageFactory } from './factories/pages/singup/singup-factory'
+import { makeSignUpPageFactory } from './factories/pages/signup/signup-factory'
 
 ReactDOM.render(
   <Router
     makeLogin={makeLoginPageFactory}
-    makeSingUp={makeSingUpPageFactory}
+    makeSignUp={makeSignUpPageFactory}
   />,
   document.getElementById('main')
 )

@@ -5,6 +5,5 @@ export class SaveAccessTokenMock implements SaveAccessToken {
 
   async save(accessToken: string): Promise<void> {
     this.accessToken = accessToken
-    console.log(this.accessToken)
   }
 }

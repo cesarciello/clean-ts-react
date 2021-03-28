@@ -4,7 +4,7 @@ import { Router } from 'react-router'
 import { createMemoryHistory } from 'history'
 import { render, RenderResult, cleanup, fireEvent, waitFor } from '@testing-library/react'
 
-import { SingUp } from '..'
+import { SignUp } from '..'
 import { ValidationSpy, Helper, AddAccountSpy, SaveAccessTokenMock } from '@/presentation/test'
 import { EmailInUseError } from '@/domain/errors'
 
@@ -15,7 +15,7 @@ type SutTypes = {
   saveAccessTokenMock: SaveAccessTokenMock
 }
 
-const history = createMemoryHistory({ initialEntries: ['/singup'] })
+const history = createMemoryHistory({ initialEntries: ['/signup'] })
 
 const makeSut = (): SutTypes => {
   const saveAccessTokenMock = new SaveAccessTokenMock()
@@ -23,7 +23,7 @@ const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const sut = render(
     <Router history={history}>
-      <SingUp validation={validationSpy} addAccount={addAccountSpy} saveAccessToken={saveAccessTokenMock} />
+      <SignUp validation={validationSpy} addAccount={addAccountSpy} saveAccessToken={saveAccessTokenMock} />
     </Router>
   )
   return {
@@ -34,7 +34,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('SingUp Page', () => {
+describe('SignUp Page', () => {
   beforeEach(() => cleanup)
 
   test('should start with correct initial state', () => {

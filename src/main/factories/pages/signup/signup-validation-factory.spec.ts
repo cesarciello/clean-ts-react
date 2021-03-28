@@ -1,9 +1,9 @@
 import { ValidationBuilder, ValidationComposite } from '@/validation/validators'
-import { makeSingUpValidationFactory } from './singup-validation-factory'
+import { makeSignUpValidationFactory } from './signup-validation-factory'
 
-describe('SingUpValidationFactory', () => {
+describe('SignUpValidationFactory', () => {
   test('should compose Validation with correct validators', () => {
-    const composite = makeSingUpValidationFactory()
+    const composite = makeSignUpValidationFactory()
     expect(composite).toEqual(new ValidationComposite([
       ...ValidationBuilder.field('name').required().min(10).build(),
       ...ValidationBuilder.field('email').required().email().build(),
