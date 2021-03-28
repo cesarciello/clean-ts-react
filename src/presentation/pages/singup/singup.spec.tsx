@@ -72,4 +72,10 @@ describe('SingUp Page', () => {
     expect(getByTestId('passwordConfirmation-input-container').childElementCount).toBe(2)
     expect(getByTestId('passwordConfirmation-error').textContent).toBe(validationSpy.errorMessage)
   })
+
+  test('should show valid name state if Validation succeds', () => {
+    const { sut: { getByTestId } } = makeSut()
+    Helper.populateField('name', getByTestId, faker.random.word())
+    expect(getByTestId('name-input-container').childElementCount).toBe(1)
+  })
 })
