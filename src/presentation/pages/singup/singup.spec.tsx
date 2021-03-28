@@ -84,4 +84,10 @@ describe('SingUp Page', () => {
     Helper.populateField('email', getByTestId, faker.random.word())
     expect(getByTestId('email-input-container').childElementCount).toBe(1)
   })
+
+  test('should show valid password state if Validation succeds', () => {
+    const { sut: { getByTestId } } = makeSut()
+    Helper.populateField('password', getByTestId, faker.random.word())
+    expect(getByTestId('password-input-container').childElementCount).toBe(1)
+  })
 })
