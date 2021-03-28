@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Styles from './singup-styles.scss'
 import Context from '@/presentation/context/form-login/form-login-context'
 import { Footer, LoginHeader, Input, FormStatusLogin } from '@/presentation/components'
+import { Validation } from '@/presentation/protocols/validation'
 
-const SingUp: React.FC = () => {
-  const [state] = useState({
+type Props = {
+  validation: Validation
+}
+
+const SingUp: React.FC<Props> = ({ validation }: Props) => {
+  const [state, setState] = useState({
     isLoading: false,
     errorMessage: '',
     name: '',
@@ -18,10 +23,18 @@ const SingUp: React.FC = () => {
     passwordConfirmation: '',
     passwordConfirmationError: ''
   })
+
+  useEffect(() => {
+    setState({
+      ...state,
+      nameError: validation.validate('name', state.name)
+    })
+  }, [state.name])
+
   return (
     <div className={Styles.singup}>
       <LoginHeader />
-      <Context.Provider value={{ state }}>
+      <Context.Provider value={{ state, setState }}>
         <form data-testid="form" className={Styles.form}>
           <h2>SingUp</h2>
           <Input type="text" name="name" placeholder="Digite seu nome" />
