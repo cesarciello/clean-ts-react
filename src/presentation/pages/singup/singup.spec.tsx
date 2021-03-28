@@ -5,29 +5,32 @@ import { createMemoryHistory } from 'history'
 import { render, RenderResult, cleanup, fireEvent, waitFor } from '@testing-library/react'
 
 import { SingUp } from '..'
-import { ValidationSpy, Helper, AddAccountSpy } from '@/presentation/test'
+import { ValidationSpy, Helper, AddAccountSpy, SaveAccessTokenMock } from '@/presentation/test'
 import { EmailInUseError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RenderResult
   validationSpy: ValidationSpy
   addAccountSpy: AddAccountSpy
+  saveAccessTokenMock: SaveAccessTokenMock
 }
 
 const history = createMemoryHistory({ initialEntries: ['/singup'] })
 
 const makeSut = (): SutTypes => {
+  const saveAccessTokenMock = new SaveAccessTokenMock()
   const addAccountSpy = new AddAccountSpy()
   const validationSpy = new ValidationSpy()
   const sut = render(
     <Router history={history}>
-      <SingUp validation={validationSpy} addAccount={addAccountSpy} />
+      <SingUp validation={validationSpy} addAccount={addAccountSpy} saveAccessToken={saveAccessTokenMock} />
     </Router>
   )
   return {
     sut,
     validationSpy,
-    addAccountSpy
+    addAccountSpy,
+    saveAccessTokenMock
   }
 }
 
@@ -151,5 +154,13 @@ describe('SingUp Page', () => {
     await waitFor(() => errorWrap)
     expect(errorWrap.childElementCount).toBe(1)
     expect(getByTestId('errorMessage').textContent).toBe(error.message)
+  })
+
+  test('should call SaveAccessToken on success', async () => {
+    const { sut: { getByTestId }, addAccountSpy, saveAccessTokenMock } = makeSut()
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
+    expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
   })
 })
