@@ -2,7 +2,7 @@ import faker from 'faker'
 import React from 'react'
 import { Router } from 'react-router'
 import { createMemoryHistory } from 'history'
-import { render, RenderResult, cleanup } from '@testing-library/react'
+import { render, RenderResult, cleanup, fireEvent } from '@testing-library/react'
 
 import { SingUp } from '..'
 import { ValidationSpy, Helper, AddAccountSpy } from '@/presentation/test'
@@ -131,5 +131,13 @@ describe('SingUp Page', () => {
     const { sut: { getByTestId }, addAccountSpy } = makeSut()
     Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
     expect(addAccountSpy.callsCount).toBe(1)
+  })
+
+  test('should prevent subimit form on invalid params', () => {
+    const { sut: { getByTestId }, validationSpy, addAccountSpy } = makeSut()
+    validationSpy.errorMessage = faker.random.word()
+    Helper.populateField('email', getByTestId, faker.internet.email())
+    fireEvent.submit(getByTestId('form'))
+    expect(addAccountSpy.callsCount).toBe(0)
   })
 })
