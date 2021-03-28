@@ -64,4 +64,12 @@ describe('SingUp Page', () => {
     expect(getByTestId('password-input-container').childElementCount).toBe(2)
     expect(getByTestId('password-error').textContent).toBe(validationSpy.errorMessage)
   })
+
+  test('should show passwordConfirmation error if validation fails', () => {
+    const { sut: { getByTestId }, validationSpy } = makeSut()
+    validationSpy.errorMessage = faker.random.words()
+    Helper.populateField('passwordConfirmation', getByTestId, faker.random.word())
+    expect(getByTestId('passwordConfirmation-input-container').childElementCount).toBe(2)
+    expect(getByTestId('passwordConfirmation-error').textContent).toBe(validationSpy.errorMessage)
+  })
 })
