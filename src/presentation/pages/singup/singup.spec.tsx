@@ -126,4 +126,10 @@ describe('SingUp Page', () => {
       passwordConfirmation: password
     })
   })
+
+  test('should calls AddAccount only once', () => {
+    const { sut: { getByTestId }, addAccountSpy } = makeSut()
+    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
+    expect(addAccountSpy.callsCount).toBe(1)
+  })
 })
