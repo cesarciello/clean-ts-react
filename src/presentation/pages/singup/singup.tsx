@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 
 import Styles from './singup-styles.scss'
@@ -6,13 +6,17 @@ import Context from '@/presentation/context/form-login/form-login-context'
 import { Footer, LoginHeader, Input, FormStatusLogin } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
 import { AddAccount } from '@/domain/usecases/add-account'
+import { SaveAccessToken } from '@/domain/usecases/save-acess-token'
 
 type Props = {
   validation: Validation
   addAccount: AddAccount
+  saveAccessToken: SaveAccessToken
 }
 
-const SingUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
+const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Props) => {
+  const history = useHistory()
+
   const [state, setState] = useState({
     isLoading: false,
     errorMessage: '',
@@ -48,12 +52,14 @@ const SingUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
         ...state,
         isLoading: true
       })
-      await addAccount.add({
+      const account = await addAccount.add({
         name: state.name,
         email: state.email,
         password: state.password,
         passwordConfirmation: state.passwordConfirmation
       })
+      await saveAccessToken.save(account.accessToken)
+      history.replace('/')
     } catch (error) {
       setState({
         ...state,
