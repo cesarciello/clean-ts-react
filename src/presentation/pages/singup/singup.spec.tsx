@@ -5,25 +5,28 @@ import { createMemoryHistory } from 'history'
 import { render, RenderResult, cleanup } from '@testing-library/react'
 
 import { SingUp } from '..'
-import { ValidationSpy, Helper } from '@/presentation/test'
+import { ValidationSpy, Helper, AddAccountSpy } from '@/presentation/test'
 
 type SutTypes = {
   sut: RenderResult
   validationSpy: ValidationSpy
+  addAccountSpy: AddAccountSpy
 }
 
 const history = createMemoryHistory({ initialEntries: ['/singup'] })
 
 const makeSut = (): SutTypes => {
+  const addAccountSpy = new AddAccountSpy()
   const validationSpy = new ValidationSpy()
   const sut = render(
     <Router history={history}>
-      <SingUp validation={validationSpy} />
+      <SingUp validation={validationSpy} addAccount={addAccountSpy} />
     </Router>
   )
   return {
     sut,
-    validationSpy
+    validationSpy,
+    addAccountSpy
   }
 }
 
@@ -108,5 +111,19 @@ describe('SingUp Page', () => {
     const { sut: { getByTestId } } = makeSut()
     Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
     expect(getByTestId('spinner')).toBeTruthy()
+  })
+
+  test('should calls AddAccount with correct values', () => {
+    const { sut: { getByTestId }, addAccountSpy } = makeSut()
+    const name = faker.name.findName()
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name', fieldValue: name }, { fieldName: 'email', fieldValue: email }, { fieldName: 'password', fieldValue: password }, { fieldName: 'passwordConfirmation', fieldValue: password }], 'submit')
+    expect(addAccountSpy.params).toEqual({
+      name,
+      email,
+      password,
+      passwordConfirmation: password
+    })
   })
 })
