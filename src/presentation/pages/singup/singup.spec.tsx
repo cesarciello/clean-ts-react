@@ -160,8 +160,6 @@ describe('SingUp Page', () => {
     const { sut: { getByTestId }, addAccountSpy, saveAccessTokenMock } = makeSut()
     await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
     expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
-    expect(history.length).toBe(1)
-    expect(history.location.pathname).toBe('/')
   })
 
   test('should show error message if SaveAccessToken fails', async () => {
@@ -173,5 +171,24 @@ describe('SingUp Page', () => {
     await waitFor(() => errorWrap)
     expect(errorWrap.childElementCount).toBe(1)
     expect(getByTestId('errorMessage').textContent).toBe(error.message)
+  })
+
+  test('should show error message if SaveAccessToken fails', async () => {
+    const { sut: { getByTestId }, saveAccessTokenMock } = makeSut()
+    const error = new Error('any_message')
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
+    const errorWrap = getByTestId('error-wrap')
+    await waitFor(() => errorWrap)
+    expect(errorWrap.childElementCount).toBe(1)
+    expect(getByTestId('errorMessage').textContent).toBe(error.message)
+  })
+
+  test('should navigate to main page on success', async () => {
+    const { sut: { getByTestId } } = makeSut()
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
+    await waitFor(() => getByTestId('form'))
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
   })
 })
