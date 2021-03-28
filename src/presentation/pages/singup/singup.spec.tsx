@@ -111,18 +111,18 @@ describe('SingUp Page', () => {
     expect(submitButton.disabled).toBe(false)
   })
 
-  test('should show spinner on submit', () => {
+  test('should show spinner on submit', async () => {
     const { sut: { getByTestId } } = makeSut()
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
     expect(getByTestId('spinner')).toBeTruthy()
   })
 
-  test('should calls AddAccount with correct values', () => {
+  test('should calls AddAccount with correct values', async () => {
     const { sut: { getByTestId }, addAccountSpy } = makeSut()
     const name = faker.name.findName()
     const email = faker.internet.email()
     const password = faker.internet.password()
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name', fieldValue: name }, { fieldName: 'email', fieldValue: email }, { fieldName: 'password', fieldValue: password }, { fieldName: 'passwordConfirmation', fieldValue: password }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name', fieldValue: name }, { fieldName: 'email', fieldValue: email }, { fieldName: 'password', fieldValue: password }, { fieldName: 'passwordConfirmation', fieldValue: password }], 'submit')
     expect(addAccountSpy.params).toEqual({
       name,
       email,
@@ -131,9 +131,9 @@ describe('SingUp Page', () => {
     })
   })
 
-  test('should calls AddAccount only once', () => {
+  test('should calls AddAccount only once', async () => {
     const { sut: { getByTestId }, addAccountSpy } = makeSut()
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
     expect(addAccountSpy.callsCount).toBe(1)
   })
 
@@ -149,7 +149,7 @@ describe('SingUp Page', () => {
     const { sut: { getByTestId }, addAccountSpy } = makeSut()
     const error = new EmailInUseError()
     jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(error)
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
     const errorWrap = getByTestId('error-wrap')
     await waitFor(() => errorWrap)
     expect(errorWrap.childElementCount).toBe(1)

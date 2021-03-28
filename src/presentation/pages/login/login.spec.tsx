@@ -81,25 +81,25 @@ describe('LoginPage', () => {
     expect(submitButton.disabled).toBe(false)
   })
 
-  test('should show spinner on submit', () => {
+  test('should show spinner on submit', async () => {
     const { sut: { getByTestId } } = makeSut()
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
     expect(getByTestId('spinner')).toBeTruthy()
   })
 
-  test('should call Authentication with correct values', () => {
+  test('should call Authentication with correct values', async () => {
     const { sut: { getByTestId }, authenticationSpy } = makeSut()
     const email = faker.internet.email()
     const password = faker.internet.password()
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email', fieldValue: email }, { fieldName: 'password', fieldValue: password }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email', fieldValue: email }, { fieldName: 'password', fieldValue: password }], 'submit')
     expect(authenticationSpy.email).toBe(email)
     expect(authenticationSpy.password).toBe(password)
   })
 
-  test('should call Authentication only once', () => {
+  test('should call Authentication only once', async () => {
     const { sut: { getByTestId }, authenticationSpy } = makeSut()
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
     expect(authenticationSpy.callsCount).toBe(1)
   })
 
@@ -115,7 +115,7 @@ describe('LoginPage', () => {
     const { sut: { getByTestId }, authenticationSpy } = makeSut()
     const error = new InvalidCredentialsError()
     jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
     const errorWarp = getByTestId('error-wrap')
     await waitFor(() => errorWarp)
     expect(errorWarp.childElementCount).toBe(1)
@@ -124,7 +124,7 @@ describe('LoginPage', () => {
 
   test('should call SaveAccessToken with correct values', async () => {
     const { sut: { getByTestId }, authenticationSpy, saveAccessTokenMock } = makeSut()
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
     saveAccessTokenMock.accessToken = authenticationSpy.account.accessToken
     await waitFor(() => getByTestId('form'))
     expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
@@ -134,7 +134,7 @@ describe('LoginPage', () => {
     const { sut: { getByTestId }, saveAccessTokenMock } = makeSut()
     const error = new Error('any_message')
     jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
     const errorWarp = getByTestId('error-wrap')
     await waitFor(() => errorWarp)
     expect(errorWarp.childElementCount).toBe(1)
@@ -143,7 +143,7 @@ describe('LoginPage', () => {
 
   test('should navigate to main page on success', async () => {
     const { sut: { getByTestId } } = makeSut()
-    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
     await waitFor(() => getByTestId('form'))
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')

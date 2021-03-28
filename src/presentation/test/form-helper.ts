@@ -9,7 +9,7 @@ export const populateListField = (getByTestId: Function, listField: Array<{ fiel
   }
 }
 
-export const simulateValidSubmit = (getByTestId: Function, listField: Array<{ fieldName: string, fieldValue?: string }>, button: string): void => {
+export const simulateValidSubmit = async (getByTestId: Function, listField: Array<{ fieldName: string, fieldValue?: string }>, button: string): Promise<void> => {
   populateListField(getByTestId, listField)
   fireEvent.click(getByTestId(button))
 }
