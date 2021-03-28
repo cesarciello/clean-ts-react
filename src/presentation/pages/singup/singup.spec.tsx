@@ -78,4 +78,10 @@ describe('SingUp Page', () => {
     Helper.populateField('name', getByTestId, faker.random.word())
     expect(getByTestId('name-input-container').childElementCount).toBe(1)
   })
+
+  test('should show valid email state if Validation succeds', () => {
+    const { sut: { getByTestId } } = makeSut()
+    Helper.populateField('email', getByTestId, faker.random.word())
+    expect(getByTestId('email-input-container').childElementCount).toBe(1)
+  })
 })
