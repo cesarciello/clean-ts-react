@@ -163,4 +163,15 @@ describe('SingUp Page', () => {
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })
+
+  test('should show error message if SaveAccessToken fails', async () => {
+    const { sut: { getByTestId }, saveAccessTokenMock } = makeSut()
+    const error = new Error('any_message')
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
+    const errorWrap = getByTestId('error-wrap')
+    await waitFor(() => errorWrap)
+    expect(errorWrap.childElementCount).toBe(1)
+    expect(getByTestId('errorMessage').textContent).toBe(error.message)
+  })
 })
