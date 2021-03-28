@@ -96,4 +96,14 @@ describe('SingUp Page', () => {
     Helper.populateField('passwordConfirmation', getByTestId, faker.random.word())
     expect(getByTestId('passwordConfirmation-input-container').childElementCount).toBe(1)
   })
+
+  test('should enable button if form is valid', () => {
+    const { sut: { getByTestId } } = makeSut()
+    Helper.populateField('name', getByTestId, faker.random.word())
+    Helper.populateField('email', getByTestId, faker.random.word())
+    Helper.populateField('password', getByTestId, faker.random.word())
+    Helper.populateField('passwordConfirmation', getByTestId, faker.random.word())
+    const submitButton = getByTestId('submit') as HTMLButtonElement
+    expect(submitButton.disabled).toBe(false)
+  })
 })

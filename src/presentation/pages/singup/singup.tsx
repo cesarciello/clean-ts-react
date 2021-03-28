@@ -34,6 +34,8 @@ const SingUp: React.FC<Props> = ({ validation }: Props) => {
     })
   }, [state.name, state.email, state.password, state.passwordConfirmation])
 
+  const disabledButtonRule = (): boolean => ((!!state.emailError || !!state.passwordError || !!state.nameError || !!state.passwordConfirmationError) || (!state.email || !state.password || !state.name || !state.passwordConfirmation))
+
   return (
     <div className={Styles.singup}>
       <LoginHeader />
@@ -44,7 +46,7 @@ const SingUp: React.FC<Props> = ({ validation }: Props) => {
           <Input type="email" name="email" placeholder="Digite seu email" />
           <Input type="password" name="password" placeholder="Digite sua senha" />
           <Input type="password" name="passwordConfirmation" placeholder="Confirme sua senha" />
-          <button disabled className={Styles.submit} data-testid="submit" type="submit">cadastrar</button>
+          <button disabled={disabledButtonRule()} className={Styles.submit} data-testid="submit" type="submit">cadastrar</button>
           <Link to="/login" data-testid="singup" className={Styles.link}>Voltar parar o Login</Link>
           <FormStatusLogin />
         </form>
