@@ -106,4 +106,10 @@ describe('SingUp Page', () => {
     const submitButton = getByTestId('submit') as HTMLButtonElement
     expect(submitButton.disabled).toBe(false)
   })
+
+  test('should show spinner on submit', () => {
+    const { sut: { getByTestId } } = makeSut()
+    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
+    expect(getByTestId('spinner')).toBeTruthy()
+  })
 })
