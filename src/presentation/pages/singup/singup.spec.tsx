@@ -2,10 +2,11 @@ import faker from 'faker'
 import React from 'react'
 import { Router } from 'react-router'
 import { createMemoryHistory } from 'history'
-import { render, RenderResult, cleanup, fireEvent } from '@testing-library/react'
+import { render, RenderResult, cleanup, fireEvent, waitFor } from '@testing-library/react'
 
 import { SingUp } from '..'
 import { ValidationSpy, Helper, AddAccountSpy } from '@/presentation/test'
+import { EmailInUseError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RenderResult
@@ -139,5 +140,16 @@ describe('SingUp Page', () => {
     Helper.populateField('email', getByTestId, faker.internet.email())
     fireEvent.submit(getByTestId('form'))
     expect(addAccountSpy.callsCount).toBe(0)
+  })
+
+  test('should present error if AddAccount fails', async () => {
+    const { sut: { getByTestId }, addAccountSpy } = makeSut()
+    const error = new EmailInUseError()
+    jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(error)
+    Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
+    const errorWrap = getByTestId('error-wrap')
+    await waitFor(() => errorWrap)
+    expect(errorWrap.childElementCount).toBe(1)
+    expect(getByTestId('errorMessage').textContent).toBe(error.message)
   })
 })
