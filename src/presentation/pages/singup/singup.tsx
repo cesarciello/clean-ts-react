@@ -5,12 +5,14 @@ import Styles from './singup-styles.scss'
 import Context from '@/presentation/context/form-login/form-login-context'
 import { Footer, LoginHeader, Input, FormStatusLogin } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
+import { AddAccount } from '@/domain/usecases/add-account'
 
 type Props = {
   validation: Validation
+  addAccount: AddAccount
 }
 
-const SingUp: React.FC<Props> = ({ validation }: Props) => {
+const SingUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     errorMessage: '',
@@ -41,6 +43,12 @@ const SingUp: React.FC<Props> = ({ validation }: Props) => {
     setState({
       ...state,
       isLoading: true
+    })
+    await addAccount.add({
+      name: state.name,
+      email: state.email,
+      password: state.password,
+      passwordConfirmation: state.passwordConfirmation
     })
   }
 
