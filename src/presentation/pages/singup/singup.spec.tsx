@@ -191,4 +191,11 @@ describe('SingUp Page', () => {
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })
+
+  test('should go to login page with click link', async () => {
+    const { sut: { getByTestId } } = makeSut()
+    fireEvent.click(getByTestId('login'))
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/login')
+  })
 })

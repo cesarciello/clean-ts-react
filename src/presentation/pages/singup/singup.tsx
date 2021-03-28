@@ -80,7 +80,7 @@ const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
           <Input type="password" name="password" placeholder="Digite sua senha" />
           <Input type="password" name="passwordConfirmation" placeholder="Confirme sua senha" />
           <button disabled={disabledButtonRule()} className={Styles.submit} data-testid="submit" type="submit">cadastrar</button>
-          <Link to="/login" data-testid="singup" className={Styles.link}>Voltar parar o Login</Link>
+          <Link to="/login" replace data-testid="login" className={Styles.link}>Voltar parar o Login</Link>
           <FormStatusLogin />
         </form>
       </Context.Provider>
