@@ -13,12 +13,17 @@
         "rootDir": "src",
         "baseUrl": "src",
         "paths": {
-            "@/*": ["*"]
+            "@/*": [
+                "*"
+            ]
         },
         "allowJs": true,
         "resolveJsonModule": true
     },
     "include": [
         "src"
+    ],
+    "exclude": [
+        "src/main/test/cypress"
     ]
 }
