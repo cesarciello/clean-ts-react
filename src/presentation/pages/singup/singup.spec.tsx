@@ -48,4 +48,12 @@ describe('SingUp Page', () => {
     expect(getByTestId('name-input-container').childElementCount).toBe(2)
     expect(getByTestId('name-error').textContent).toBe(validationSpy.errorMessage)
   })
+
+  test('should show email error if validation fails', () => {
+    const { sut: { getByTestId }, validationSpy } = makeSut()
+    validationSpy.errorMessage = faker.random.words()
+    Helper.populateField('email', getByTestId, faker.random.word())
+    expect(getByTestId('email-input-container').childElementCount).toBe(2)
+    expect(getByTestId('email-error').textContent).toBe(validationSpy.errorMessage)
+  })
 })
