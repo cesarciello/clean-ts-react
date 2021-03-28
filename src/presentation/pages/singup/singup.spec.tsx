@@ -99,10 +99,7 @@ describe('SingUp Page', () => {
 
   test('should enable button if form is valid', () => {
     const { sut: { getByTestId } } = makeSut()
-    Helper.populateField('name', getByTestId, faker.random.word())
-    Helper.populateField('email', getByTestId, faker.random.word())
-    Helper.populateField('password', getByTestId, faker.random.word())
-    Helper.populateField('passwordConfirmation', getByTestId, faker.random.word())
+    Helper.populateListField(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }])
     const submitButton = getByTestId('submit') as HTMLButtonElement
     expect(submitButton.disabled).toBe(false)
   })
