@@ -15,7 +15,7 @@ type StateProps = {
   password: string
   emailError: string
   passwordError: string
-  isInvalidForm: boolean
+  isFormInvalid: boolean
 }
 
 type Props = {
@@ -29,7 +29,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
   const [state, setState] = useState<StateProps>({
     isLoading: false,
     errorMessage: '',
-    isInvalidForm: true,
+    isFormInvalid: true,
     emailError: '',
     passwordError: '',
     email: '',
@@ -43,14 +43,14 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
       ...state,
       emailError: validEmail,
       passwordError: validPassword,
-      isInvalidForm: !!validEmail || !!validPassword
+      isFormInvalid: !!validEmail || !!validPassword
     })
   }, [state.email, state.password])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     try {
-      if (state.isLoading || state.isInvalidForm) {
+      if (state.isLoading || state.isFormInvalid) {
         return
       }
       setState({
