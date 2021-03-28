@@ -2,19 +2,28 @@ import { InavlidFieldError } from '@/validation/error'
 import faker from 'faker'
 import { CompareFieldsValidation } from './compare-fields-validation'
 
-const makeSut = (fieldToCompare, valueToCompare: string): CompareFieldsValidation => (new CompareFieldsValidation(fieldToCompare, valueToCompare))
+const makeSut = (field, fieldToCompare: string): CompareFieldsValidation => (new CompareFieldsValidation(field, fieldToCompare))
 describe('CompareFieldsValidation', () => {
   test('should return error if compare is invalid', () => {
+    const field = faker.database.column()
     const fieldToCompare = faker.database.column()
-    const sut = makeSut(fieldToCompare, faker.random.word())
-    const error = sut.validate(faker.random.word())
+    const sut = makeSut(field, fieldToCompare)
+    const error = sut.validate({
+      [field]: faker.random.word(),
+      [fieldToCompare]: faker.random.word()
+    })
     expect(error).toEqual(new InavlidFieldError(fieldToCompare))
   })
 
   test('should return null if compare is valid', () => {
+    const field = faker.database.column()
+    const fieldToCompare = faker.database.column()
     const value = faker.random.word()
-    const sut = makeSut(faker.database.column(), value)
-    const error = sut.validate(value)
+    const sut = makeSut(field, fieldToCompare)
+    const error = sut.validate({
+      [field]: value,
+      [fieldToCompare]: value
+    })
     expect(error).toBeFalsy()
   })
 })

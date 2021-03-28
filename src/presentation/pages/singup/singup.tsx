@@ -46,10 +46,10 @@ const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
   })
 
   useEffect(() => {
-    const nameError = validation.validate('name', state.name)
-    const emailError = validation.validate('email', state.email)
-    const passwordError = validation.validate('password', state.password)
-    const passwordConfirmationError = validation.validate('passwordConfirmation', state.passwordConfirmation)
+    const nameError = validation.validate('name', { name: state.name })
+    const emailError = validation.validate('email', { email: state.email })
+    const passwordError = validation.validate('password', { password: state.password })
+    const passwordConfirmationError = validation.validate('passwordConfirmation', { passwordConfirmation: state.passwordConfirmation })
     setState({
       ...state,
       nameError,
