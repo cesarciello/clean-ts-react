@@ -49,7 +49,7 @@ const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
     const nameError = validation.validate('name', { name: state.name })
     const emailError = validation.validate('email', { email: state.email })
     const passwordError = validation.validate('password', { password: state.password })
-    const passwordConfirmationError = validation.validate('passwordConfirmation', { passwordConfirmation: state.passwordConfirmation })
+    const passwordConfirmationError = validation.validate('passwordConfirmation', { password: state.password, passwordConfirmation: state.passwordConfirmation })
     setState({
       ...state,
       nameError,

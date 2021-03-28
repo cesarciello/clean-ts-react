@@ -4,14 +4,15 @@ import { SingUp } from '@/presentation/pages'
 
 type Props = {
   makeLogin: React.FC
+  makeSingUp: React.FC
 }
 
-const Router: React.FC<Props> = ({ makeLogin }: Props) => {
+const Router: React.FC<Props> = ({ makeLogin, makeSingUp }: Props) => {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/login" exact component={makeLogin} />
-        <Route path="/singup" exact component={SingUp} />
+        <Route path="/singup" exact component={makeSingUp} />
       </Switch>
     </BrowserRouter>
   )
