@@ -28,17 +28,8 @@
             margin-top: 1.2rem;
         }
 
-        .submit {
+        button {
             margin-top: 2.3rem;
-
-            &:disabled {
-                background-color: $disabledBackground;
-                color: $disabledColor;
-
-                &:hover {
-                    opacity: 1;
-                }
-            }
         }
 
         .link {
