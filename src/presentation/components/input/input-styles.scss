@@ -3,7 +3,7 @@
 .inputContainer {
     display: flex;
     flex-direction: column;
-    margin-top: 2.5rem;
+    margin-top: 3.5rem;
 
     .inputWrap {
         position: relative;
@@ -32,22 +32,23 @@
 
             label {
                 transform: translateY(-20px);
-                font-size: .9rem;
+                font-size: 1.2rem;
             }
         }
 
         input {
             width: 100%;
-            line-height: 2.5rem;
-            padding: 0 .5rem;
+            line-height: 3.5rem;
+            padding: 0 .7rem;
 
             &:not(:placeholder-shown)+label {
                 transform: translateY(-20px);
-                font-size: .9rem;
+                font-size: 1.2rem;
             }
         }
 
         label {
+            font-size: 1.4rem;
             position: absolute;
             left: .6rem;
             color: $disabledColor;
@@ -61,8 +62,8 @@
     }
 
     .errorInputMessage {
-        font-size: 0.9rem;
-        margin: 0.3rem 0.3rem 0;
+        font-size: 1.2rem;
+        margin: 0.4rem 0.4rem 0;
         color: #bc487b;
     }
 }
