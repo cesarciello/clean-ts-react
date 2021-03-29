@@ -68,6 +68,12 @@ describe('SignUp', () => {
     cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
   })
 
+  it('should not call submit if invalid form', () => {
+    HttpHelper.mockLoginRequest(/login/)
+    FormHelper.input('email').type(faker.internet.email()).type('{enter}')
+    cy.get('@request.all').should('have.length', 0)
+  })
+
   it('should prevent submit call only once', () => {
     HttpHelper.mockLoginRequest(/signup/)
     FormHelper.submitFormSingup()
