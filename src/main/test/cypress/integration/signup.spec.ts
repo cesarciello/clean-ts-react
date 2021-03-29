@@ -1,3 +1,4 @@
+import faker from 'faker'
 import { FormHelper, HttpHelper } from '../utils'
 
 describe('SignUp', () => {
@@ -16,5 +17,17 @@ describe('SignUp', () => {
     FormHelper.inputError('passwordConfirmation').should('have.text', 'Required field password confirmation')
     FormHelper.submitButton().should('have.attr', 'disabled')
     FormHelper.errorWarp().should('not.have.descendants')
+  })
+
+  it('should present error state if form is invalid', () => {
+    FormHelper.input('name').type(faker.random.alphaNumeric(7))
+    FormHelper.inputError('name').should('have.text', 'Min Length field is 10')
+    FormHelper.input('email').type(faker.random.word())
+    FormHelper.inputError('email').should('have.text', 'Invalid field email')
+    FormHelper.input('password').type(faker.random.alphaNumeric(4))
+    FormHelper.inputError('password').should('have.text', 'Min Length field is 5')
+    FormHelper.input('passwordConfirmation').type(faker.random.alphaNumeric(4))
+    FormHelper.inputError('passwordConfirmation').should('have.text', 'Invalid field password confirmation')
+    FormHelper.submitButton().should('have.attr', 'disabled')
   })
 })
