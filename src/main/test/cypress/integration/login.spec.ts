@@ -52,4 +52,17 @@ describe('Login', () => {
       .getByTestId('errorMessage').should('have.text', 'Invalid Credentials')
     cy.url().should('eq', `${baseUrl}/login`)
   })
+
+  it('should save accessToken If valid credential are provided', () => {
+    cy.getByTestId('email').type('mango@gmail.com')
+    cy.getByTestId('password').type('12345')
+    cy.getByTestId('submit').click()
+    cy.getByTestId('error-wrap')
+      .getByTestId('spinner').should('exist')
+      .getByTestId('errorMessage').should('not.exist')
+      .getByTestId('spinner').should('not.exist')
+      .getByTestId('errorMessage').should('not.exist')
+    cy.url().should('eq', `${baseUrl}/`)
+    cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
+  })
 })
