@@ -60,4 +60,18 @@ describe('SignUp', () => {
     FormHelper.ifErrorFlowErrorWarp('Email alredy in use')
     cy.url().should('eq', `${baseUrl}/signup`)
   })
+
+  it('should navegate and SaveAccessToken on success', () => {
+    HttpHelper.mockLoginRequest(/signup/)
+    FormHelper.submitFormSingup()
+    cy.url().should('eq', `${baseUrl}/`)
+    cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
+  })
+
+  it('should prevent submit call only once', () => {
+    HttpHelper.mockLoginRequest(/signup/)
+    FormHelper.submitFormSingup()
+    FormHelper.submitButton().click()
+    cy.get('@request.all').should('have.length', 1)
+  })
 })
