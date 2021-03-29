@@ -6,6 +6,7 @@ describe('Login', () => {
   beforeEach(() => {
     cy.visit('login')
   })
+
   it('should load with correct initial state', () => {
     cy.getByTestId('email-error').should('have.text', 'Required field email')
     cy.getByTestId('password-error').should('have.text', 'Required field password')
@@ -30,18 +31,13 @@ describe('Login', () => {
     cy.getByTestId('error-wrap').should('not.have.descendants')
   })
 
-  it('should present error if credential invalid are provided', () => {
-    cy.getByTestId('email').type(faker.internet.email())
-    cy.getByTestId('password').type(faker.internet.password())
-    cy.getByTestId('submit').click()
-    cy.getByTestId('error-wrap')
-      .getByTestId('spinner').should('exist')
-      .getByTestId('errorMessage').should('not.exist')
-      .getByTestId('spinner').should('not.exist')
-      .getByTestId('errorMessage').should('have.text', 'Invalid Credentials')
-  })
-
-  it('should present error if credential invalid are provided', () => {
+  it('should present InvalidCredentialsError on 401', () => {
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send({ statusCode: 401, body: { error: faker.random.word() } })
+        res.delay(1000)
+      })
+    })
     cy.getByTestId('email').type(faker.internet.email())
     cy.getByTestId('password').type(faker.internet.password())
     cy.getByTestId('submit').click()
@@ -54,8 +50,14 @@ describe('Login', () => {
   })
 
   it('should save accessToken If valid credential are provided', () => {
-    cy.getByTestId('email').type('mango@gmail.com')
-    cy.getByTestId('password').type('12345')
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send({ statusCode: 200, body: { accessToken: faker.random.uuid() } })
+        res.delay(1000)
+      })
+    })
+    cy.getByTestId('email').type(faker.internet.email())
+    cy.getByTestId('password').type(faker.internet.password())
     cy.getByTestId('submit').click()
     cy.getByTestId('error-wrap')
       .getByTestId('spinner').should('exist')
