@@ -30,4 +30,18 @@ describe('SignUp', () => {
     FormHelper.inputError('passwordConfirmation').should('have.text', 'Invalid field password confirmation')
     FormHelper.submitButton().should('have.attr', 'disabled')
   })
+
+  it('should present valid state if form is valid', () => {
+    FormHelper.fillSignUpInputs()
+    FormHelper.inputError('name').should('not.exist')
+    FormHelper.inputError('email').should('not.exist')
+    FormHelper.inputError('password').should('not.exist')
+    FormHelper.inputError('passwordConfirmation').should('not.exist')
+    FormHelper.inputWarp('name').should('have.attr', 'data-status', 'valid')
+    FormHelper.inputWarp('email').should('have.attr', 'data-status', 'valid')
+    FormHelper.inputWarp('password').should('have.attr', 'data-status', 'valid')
+    FormHelper.inputWarp('passwordConfirmation').should('have.attr', 'data-status', 'valid')
+    FormHelper.submitButton().should('not.have.attr', 'disabled')
+    FormHelper.errorWarp().should('not.have.descendants')
+  })
 })

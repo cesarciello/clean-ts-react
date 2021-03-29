@@ -21,3 +21,11 @@ export const ifErrorFlowErrorWarp = (error: string): void => {
     .getByTestId('spinner').should('not.exist')
     .getByTestId('errorMessage').should('have.text', error)
 }
+
+export const fillSignUpInputs = (): void => {
+  const password = faker.internet.password()
+  input('name').type(faker.name.findName())
+  input('email').type(faker.internet.email())
+  input('password').type(password)
+  input('passwordConfirmation').type(password)
+}
