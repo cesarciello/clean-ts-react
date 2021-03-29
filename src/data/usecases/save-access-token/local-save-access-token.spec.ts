@@ -30,6 +30,12 @@ describe('LocalSaveAccessToken', () => {
     const { sut, setStorageMock } = makeSut()
     jest.spyOn(setStorageMock, 'set').mockImplementationOnce(() => { throw new Error() })
     const promise = sut.save(faker.random.uuid())
-    expect(promise).rejects.toThrow()
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('should throws if undefined is provided', async () => {
+    const { sut } = makeSut()
+    const promise = sut.save(undefined)
+    await expect(promise).rejects.toThrow()
   })
 })
