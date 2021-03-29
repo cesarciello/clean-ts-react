@@ -53,4 +53,11 @@ describe('SignUp', () => {
     FormHelper.ifErrorFlowErrorWarp('Unexpected error. Try again later')
     cy.url().should('eq', `${baseUrl}/signup`)
   })
+
+  it('should present mockForbbidenRequest on email in use', () => {
+    HttpHelper.mockForbbidenRequest(/signup/)
+    FormHelper.submitFormSingup()
+    FormHelper.ifErrorFlowErrorWarp('Email alredy in use')
+    cy.url().should('eq', `${baseUrl}/signup`)
+  })
 })
