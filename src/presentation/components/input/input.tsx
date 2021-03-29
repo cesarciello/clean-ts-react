@@ -15,7 +15,7 @@ const Input: React.FC<Props> = (props: Props) => {
   }
   return (
     <div data-testid={`${props.name}-input-container`} className={Styles.inputContainer} >
-      <div className={Styles.inputWrap}>
+      <div data-testid={`${props.name}-input-warp`} className={Styles.inputWrap} data-status={error ? 'invalid' : 'valid'}>
         <input {...props} placeholder=" " data-testid={props.name} className={Styles.input} onChange={handleChange} />
         <label>{props.placeholder}</label>
       </div>

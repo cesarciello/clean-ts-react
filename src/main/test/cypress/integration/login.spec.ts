@@ -8,6 +8,8 @@ describe('Login', () => {
   })
 
   it('should load with correct initial state', () => {
+    cy.getByTestId('email-input-warp').should('have.attr', 'data-status', 'invalid')
+    cy.getByTestId('password-input-warp').should('have.attr', 'data-status', 'invalid')
     cy.getByTestId('email-error').should('have.text', 'Required field email')
     cy.getByTestId('password-error').should('have.text', 'Required field password')
     cy.getByTestId('submit').should('have.attr', 'disabled')
@@ -27,6 +29,8 @@ describe('Login', () => {
     cy.getByTestId('email-error').should('not.exist')
     cy.getByTestId('password').type(faker.internet.password())
     cy.getByTestId('password-error').should('not.exist')
+    cy.getByTestId('email-input-warp').should('have.attr', 'data-status', 'valid')
+    cy.getByTestId('password-input-warp').should('have.attr', 'data-status', 'valid')
     cy.getByTestId('submit').should('not.have.attr', 'disabled')
     cy.getByTestId('error-wrap').should('not.have.descendants')
   })
