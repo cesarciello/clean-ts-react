@@ -49,6 +49,24 @@ describe('Login', () => {
     cy.url().should('eq', `${baseUrl}/login`)
   })
 
+  it('should present UnexpectedError on 400', () => {
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send({ statusCode: 400, body: { error: faker.random.word() } })
+        res.delay(1000)
+      })
+    })
+    cy.getByTestId('email').type(faker.internet.email())
+    cy.getByTestId('password').type(faker.internet.password())
+    cy.getByTestId('submit').click()
+    cy.getByTestId('error-wrap')
+      .getByTestId('spinner').should('exist')
+      .getByTestId('errorMessage').should('not.exist')
+      .getByTestId('spinner').should('not.exist')
+      .getByTestId('errorMessage').should('have.text', 'Unexpected error. Try again later')
+    cy.url().should('eq', `${baseUrl}/login`)
+  })
+
   it('should save accessToken If valid credential are provided', () => {
     cy.intercept(/login/, (req) => {
       req.reply((res) => {
