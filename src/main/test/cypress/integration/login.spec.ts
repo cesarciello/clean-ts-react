@@ -68,4 +68,11 @@ describe('Login', () => {
     FormHelper.input('email').type(faker.internet.email()).type('{enter}')
     cy.get('@request.all').should('have.length', 0)
   })
+
+  it('should navegate and SaveAccessToken on success', () => {
+    HttpHelper.mockLoginRequest(/login/)
+    FormHelper.submitFormLogin()
+    cy.url().should('eq', `${baseUrl}/`)
+    cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
+  })
 })
