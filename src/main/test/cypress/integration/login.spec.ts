@@ -67,6 +67,24 @@ describe('Login', () => {
     cy.url().should('eq', `${baseUrl}/login`)
   })
 
+  it('should present UnexpectedError on data response is invalid', () => {
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send({ statusCode: 200, body: { xxx: faker.random.uuid() } })
+        res.delay(1000)
+      })
+    })
+    cy.getByTestId('email').type(faker.internet.email())
+    cy.getByTestId('password').type(faker.internet.password())
+    cy.getByTestId('submit').click()
+    cy.getByTestId('error-wrap')
+      .getByTestId('spinner').should('exist')
+      .getByTestId('errorMessage').should('not.exist')
+      .getByTestId('spinner').should('not.exist')
+      .getByTestId('errorMessage').should('have.text', 'Unexpected error. Try again later')
+    cy.window().then(window => assert.isNull(window.localStorage.getItem('accessToken')))
+  })
+
   it('should save accessToken If valid credential are provided', () => {
     cy.intercept(/login/, (req) => {
       req.reply((res) => {
