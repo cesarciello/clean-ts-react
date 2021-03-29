@@ -24,8 +24,12 @@ export const ifErrorFlowErrorWarp = (error: string): void => {
 
 export const fillSignUpInputs = (): void => {
   const password = faker.internet.password()
-  input('name').type(faker.name.findName())
+  input('name').type(faker.random.alphaNumeric(11))
   input('email').type(faker.internet.email())
   input('password').type(password)
   input('passwordConfirmation').type(password)
+}
+export const submitFormSingup = (): void => {
+  fillSignUpInputs()
+  submitButton().click()
 }

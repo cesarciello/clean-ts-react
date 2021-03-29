@@ -1,6 +1,8 @@
 import faker from 'faker'
 import { FormHelper, HttpHelper } from '../utils'
 
+const baseUrl: string = Cypress.config().baseUrl
+
 describe('SignUp', () => {
   beforeEach(() => {
     cy.visit('signup')
@@ -43,5 +45,12 @@ describe('SignUp', () => {
     FormHelper.inputWarp('passwordConfirmation').should('have.attr', 'data-status', 'valid')
     FormHelper.submitButton().should('not.have.attr', 'disabled')
     FormHelper.errorWarp().should('not.have.descendants')
+  })
+
+  it('should present UnexpectedError on [400, 404, 500]', () => {
+    HttpHelper.mockUnexpectedRequest(/signup/)
+    FormHelper.submitFormSingup()
+    FormHelper.ifErrorFlowErrorWarp('Unexpected error. Try again later')
+    cy.url().should('eq', `${baseUrl}/signup`)
   })
 })
