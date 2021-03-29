@@ -15,18 +15,8 @@ body {
 input[type="password"],
 input[type="text"],
 input[type="email"] {
-    border: 1px solid $primaryLight;
-    line-height: 3.4rem;
-    border-radius: .3rem;
-    transition: all 0.2s ease-in;
-
-    &:focus {
-        outline-color: $primaryLight;
-    }
-
-    &:hover {
-        filter: brightness(0.9);
-    }
+    outline: none;
+    border: none;
 }
 
 button {

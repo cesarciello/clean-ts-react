@@ -15,7 +15,10 @@ const Input: React.FC<Props> = (props: Props) => {
   }
   return (
     <div data-testid={`${props.name}-input-container`} className={Styles.inputContainer} >
-      <input {...props} data-testid={props.name} className={Styles.input} onChange={handleChange} />
+      <div className={Styles.inputWrap}>
+        <input {...props} placeholder=" " data-testid={props.name} className={Styles.input} onChange={handleChange} />
+        <label>{props.placeholder}</label>
+      </div>
       {error && <p className={Styles.errorInputMessage} data-testid={`${props.name}-error`} >{error}</p>}
     </div>
   )
