@@ -9,6 +9,13 @@
 
 html {
     font-size: 62.5%;
+    width: 100%; //remove in bug case
+}
+
+@media only screen and (max-width: 500px) {
+    html {
+        font-size: 52.5%;
+    }
 }
 
 body {

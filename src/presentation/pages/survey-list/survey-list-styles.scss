@@ -98,6 +98,7 @@
                         font-size: 1.8rem;
                         margin: 2.4rem;
                         align-self: center;
+                        flex-grow: 1;
                     }
                 }
 
@@ -114,6 +115,20 @@
                     &:hover {
                         background-color: $primaryDark;
                     }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .surveyListWrap {
+        .contentWarp {
+            ul {
+                flex-direction: column;
+
+                li {
+                    flex-basis: 100%;
                 }
             }
         }
