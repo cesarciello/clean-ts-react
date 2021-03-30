@@ -1,0 +1,18 @@
+@import '../../styles/colors.scss';
+
+.iconWarp {
+    border-radius: 100%;
+    padding: 1rem;
+
+    img {
+        height: 1.4rem;
+    }
+
+    &.red {
+        background-color: $invalid;
+    }
+
+    &.green {
+        background-color: $valid;
+    }
+}
