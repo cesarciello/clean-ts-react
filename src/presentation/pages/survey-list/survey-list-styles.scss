@@ -91,6 +91,7 @@
                 }
 
                 .surveyContent {
+                    position: relative;
                     border-radius: 0.8rem 0.8rem 0 0;
                     display: flex;
                     flex-direction: row;
@@ -101,6 +102,23 @@
                         linear-gradient(to right, rgba($primaryLight, 0.1), rgba($primaryLight, 0.1)), linear-gradient(to right, $white, $white);
                     background-position: 0 0, 54 0;
                     background-size: 5.4rem 100%, 100% 100%;
+
+                    .iconWarp {
+                        position: absolute;
+                        top: -1rem;
+                        right: -1rem;
+                        border-radius: 100%;
+                        padding: 1rem;
+                        box-shadow: 0px 3px 20px rgba(51, 51, 51, 0.4);
+
+                        &.red {
+                            background-color: $invalid;
+                        }
+
+                        &.green {
+                            background-color: $valid;
+                        }
+                    }
 
                     time {
                         display: flex;
