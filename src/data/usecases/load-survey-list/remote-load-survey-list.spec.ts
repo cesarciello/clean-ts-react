@@ -25,10 +25,20 @@ describe('RemoteLoadSurveyList', () => {
     await sut.loadAll()
     expect(httpGetClientSpy.url).toBe(url)
   })
+
   test('should throws UnexpectedError on 400', async () => {
     const { sut, httpGetClientSpy } = makeSut()
     httpGetClientSpy.httpResponse = {
       statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.loadAll()
+    expect(promise).rejects.toThrow()
+  })
+
+  test('should throws UnexpectedError on 403', async () => {
+    const { sut, httpGetClientSpy } = makeSut()
+    httpGetClientSpy.httpResponse = {
+      statusCode: HttpStatusCode.forbidden
     }
     const promise = sut.loadAll()
     expect(promise).rejects.toThrow()
