@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { HttpPostClient } from '@/data/protocols/http'
+import { HttpPostClient, HttpResponse } from '@/data/protocols/http'
 import { HttpGetClient } from '@/data/protocols/http/http-get-client'
 
 export class AxiosHttpClient<R> implements HttpPostClient<R>, HttpGetClient<R> {
@@ -10,10 +10,7 @@ export class AxiosHttpClient<R> implements HttpPostClient<R>, HttpGetClient<R> {
     } catch (error) {
       axiosResponse = error.response
     }
-    return {
-      statusCode: axiosResponse.status,
-      body: axiosResponse.data
-    }
+    return this.adaptResponse(axiosResponse)
   }
 
   async get(params: HttpGetClient.Params): Promise<HttpGetClient.Result<R>> {
@@ -23,6 +20,10 @@ export class AxiosHttpClient<R> implements HttpPostClient<R>, HttpGetClient<R> {
     } catch (error) {
       axiosResponse = error.response
     }
+    return this.adaptResponse(axiosResponse)
+  }
+
+  private adaptResponse(axiosResponse: AxiosResponse): HttpResponse<R> {
     return {
       statusCode: axiosResponse.status,
       body: axiosResponse.data
