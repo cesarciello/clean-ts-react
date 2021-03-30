@@ -9,13 +9,13 @@ import { InvalidCredentialsError, UnexpectedError, EmailInUseError } from '@/dom
 
 type SutTypes = {
   sut: RemoteAddAccount
-  httpPostClientSpy: HttpPostClientSpy<AddAccount.Params, AddAccount.Result>
+  httpPostClientSpy: HttpPostClientSpy<AddAccount.Result>
 }
 
 const url = faker.internet.url()
 
 const makeSut = (): SutTypes => {
-  const httpPostClientSpy = new HttpPostClientSpy<AddAccount.Params, AddAccount.Result>()
+  const httpPostClientSpy = new HttpPostClientSpy<AddAccount.Result>()
   const sut = new RemoteAddAccount(url, httpPostClientSpy)
   return {
     sut,

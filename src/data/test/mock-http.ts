@@ -1,18 +1,18 @@
 import faker from 'faker'
 import { HttpPostClient, HttpResponse, HttpStatusCode } from '@/data/protocols/http'
 
-export const mockPostRequest = (): HttpPostClient.Params<any> => ({
+export const mockPostRequest = (): HttpPostClient.Params => ({
   url: faker.internet.url(),
   body: faker.random.objectElement()
 })
-export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
+export class HttpPostClientSpy<R> implements HttpPostClient<R> {
   url?: string
-  body?: T
+  body?: any
   httpResponse: HttpResponse<R> = {
     statusCode: HttpStatusCode.success
   }
 
-  async post(params: HttpPostClient.Params<T>): Promise<HttpPostClient.Result<R>> {
+  async post(params: HttpPostClient.Params): Promise<HttpPostClient.Result<R>> {
     this.url = params.url
     this.body = params.body
     return Promise.resolve(this.httpResponse)
