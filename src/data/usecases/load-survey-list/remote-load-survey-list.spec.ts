@@ -1,6 +1,7 @@
 import faker from 'faker'
 import { HttpGetClientSpy } from '@/data/test/mock-http'
 import { RemoteLoadSurveyList } from './remote-load-survey-list'
+import { HttpStatusCode } from '@/data/protocols/http'
 
 type SutTypes = {
   sut: RemoteLoadSurveyList
@@ -23,5 +24,13 @@ describe('RemoteLoadSurveyList', () => {
     const { sut, httpGetClientSpy } = makeSut()
     await sut.loadAll()
     expect(httpGetClientSpy.url).toBe(url)
+  })
+  test('should throws UnexpectedError on 400', async () => {
+    const { sut, httpGetClientSpy } = makeSut()
+    httpGetClientSpy.httpResponse = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.loadAll()
+    expect(promise).rejects.toThrow()
   })
 })

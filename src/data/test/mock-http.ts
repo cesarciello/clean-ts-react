@@ -22,7 +22,9 @@ export class HttpPostClientSpy<R> implements HttpPostClient<R> {
 
 export class HttpGetClientSpy<T> implements HttpGetClient<T> {
   url: string
-  httpResponse: HttpGetClient.Result<T>
+  httpResponse: HttpGetClient.Result<T> = {
+    statusCode: 200
+  }
 
   async get(params: HttpGetClient.Params): Promise<HttpGetClient.Result<T>> {
     this.url = params.url
