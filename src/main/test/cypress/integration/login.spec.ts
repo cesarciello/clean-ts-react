@@ -9,12 +9,12 @@ describe('Login', () => {
   })
 
   it('should load with correct initial state', () => {
-    FormHelper.inputWarp('email').should('have.attr', 'data-status', 'invalid')
-    FormHelper.inputWarp('password').should('have.attr', 'data-status', 'invalid')
+    FormHelper.inputWrap('email').should('have.attr', 'data-status', 'invalid')
+    FormHelper.inputWrap('password').should('have.attr', 'data-status', 'invalid')
     FormHelper.inputError('email').should('have.text', 'Required field email')
     FormHelper.inputError('password').should('have.text', 'Required field password')
     FormHelper.submitButton().should('have.attr', 'disabled')
-    FormHelper.errorWarp().should('not.have.descendants')
+    FormHelper.errorWrap().should('not.have.descendants')
   })
 
   it('should present error state if form is invalid', () => {
@@ -29,30 +29,30 @@ describe('Login', () => {
     FormHelper.fillLoginInputs()
     FormHelper.inputError('email-error').should('not.exist')
     FormHelper.inputError('password').should('not.exist')
-    FormHelper.inputWarp('email').should('have.attr', 'data-status', 'valid')
-    FormHelper.inputWarp('password').should('have.attr', 'data-status', 'valid')
+    FormHelper.inputWrap('email').should('have.attr', 'data-status', 'valid')
+    FormHelper.inputWrap('password').should('have.attr', 'data-status', 'valid')
     FormHelper.submitButton().should('not.have.attr', 'disabled')
-    FormHelper.errorWarp().should('not.have.descendants')
+    FormHelper.errorWrap().should('not.have.descendants')
   })
 
   it('should present InvalidCredentialsError on 401', () => {
     HttpHelper.mockInvalidCredentialsRequest(/login/)
     FormHelper.submitFormLogin()
-    FormHelper.ifErrorFlowErrorWarp('Invalid Credentials')
+    FormHelper.ifErrorFlowErrorWrap('Invalid Credentials')
     cy.url().should('eq', `${baseUrl}/login`)
   })
 
   it('should present UnexpectedError on 400', () => {
     HttpHelper.mockUnexpectedRequest(/login/)
     FormHelper.submitFormLogin()
-    FormHelper.ifErrorFlowErrorWarp('Unexpected error. Try again later')
+    FormHelper.ifErrorFlowErrorWrap('Unexpected error. Try again later')
     cy.url().should('eq', `${baseUrl}/login`)
   })
 
   it('should present UnexpectedError on data response is invalid', () => {
     HttpHelper.mockLoginNoDataRequest(/login/)
     FormHelper.submitFormLogin()
-    FormHelper.ifErrorFlowErrorWarp('Unexpected error. Try again later')
+    FormHelper.ifErrorFlowErrorWrap('Unexpected error. Try again later')
     cy.window().then(window => assert.isNull(window.localStorage.getItem('accessToken')))
   })
 

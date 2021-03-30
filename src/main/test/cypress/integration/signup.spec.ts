@@ -9,16 +9,16 @@ describe('SignUp', () => {
   })
 
   it('should load with correct initial state', () => {
-    FormHelper.inputWarp('email').should('have.attr', 'data-status', 'invalid')
-    FormHelper.inputWarp('password').should('have.attr', 'data-status', 'invalid')
-    FormHelper.inputWarp('name').should('have.attr', 'data-status', 'invalid')
-    FormHelper.inputWarp('passwordConfirmation').should('have.attr', 'data-status', 'invalid')
+    FormHelper.inputWrap('email').should('have.attr', 'data-status', 'invalid')
+    FormHelper.inputWrap('password').should('have.attr', 'data-status', 'invalid')
+    FormHelper.inputWrap('name').should('have.attr', 'data-status', 'invalid')
+    FormHelper.inputWrap('passwordConfirmation').should('have.attr', 'data-status', 'invalid')
     FormHelper.inputError('email').should('have.text', 'Required field email')
     FormHelper.inputError('password').should('have.text', 'Required field password')
     FormHelper.inputError('name').should('have.text', 'Required field name')
     FormHelper.inputError('passwordConfirmation').should('have.text', 'Required field password confirmation')
     FormHelper.submitButton().should('have.attr', 'disabled')
-    FormHelper.errorWarp().should('not.have.descendants')
+    FormHelper.errorWrap().should('not.have.descendants')
   })
 
   it('should present error state if form is invalid', () => {
@@ -39,25 +39,25 @@ describe('SignUp', () => {
     FormHelper.inputError('email').should('not.exist')
     FormHelper.inputError('password').should('not.exist')
     FormHelper.inputError('passwordConfirmation').should('not.exist')
-    FormHelper.inputWarp('name').should('have.attr', 'data-status', 'valid')
-    FormHelper.inputWarp('email').should('have.attr', 'data-status', 'valid')
-    FormHelper.inputWarp('password').should('have.attr', 'data-status', 'valid')
-    FormHelper.inputWarp('passwordConfirmation').should('have.attr', 'data-status', 'valid')
+    FormHelper.inputWrap('name').should('have.attr', 'data-status', 'valid')
+    FormHelper.inputWrap('email').should('have.attr', 'data-status', 'valid')
+    FormHelper.inputWrap('password').should('have.attr', 'data-status', 'valid')
+    FormHelper.inputWrap('passwordConfirmation').should('have.attr', 'data-status', 'valid')
     FormHelper.submitButton().should('not.have.attr', 'disabled')
-    FormHelper.errorWarp().should('not.have.descendants')
+    FormHelper.errorWrap().should('not.have.descendants')
   })
 
   it('should present UnexpectedError on [400, 404, 500]', () => {
     HttpHelper.mockUnexpectedRequest(/signup/)
     FormHelper.submitFormSingup()
-    FormHelper.ifErrorFlowErrorWarp('Unexpected error. Try again later')
+    FormHelper.ifErrorFlowErrorWrap('Unexpected error. Try again later')
     cy.url().should('eq', `${baseUrl}/signup`)
   })
 
   it('should present mockForbbidenRequest on email in use', () => {
     HttpHelper.mockForbbidenRequest(/signup/)
     FormHelper.submitFormSingup()
-    FormHelper.ifErrorFlowErrorWarp('Email alredy in use')
+    FormHelper.ifErrorFlowErrorWrap('Email alredy in use')
     cy.url().should('eq', `${baseUrl}/signup`)
   })
 

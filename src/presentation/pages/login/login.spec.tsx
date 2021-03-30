@@ -116,10 +116,10 @@ describe('LoginPage', () => {
     const error = new InvalidCredentialsError()
     jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
     await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
-    const errorWarp = getByTestId('error-wrap')
-    await waitFor(() => errorWarp)
-    expect(errorWarp.childElementCount).toBe(1)
-    expect(errorWarp.textContent).toBe(error.message)
+    const errorWrap = getByTestId('error-wrap')
+    await waitFor(() => errorWrap)
+    expect(errorWrap.childElementCount).toBe(1)
+    expect(errorWrap.textContent).toBe(error.message)
   })
 
   test('should call SaveAccessToken with correct values', async () => {
@@ -135,10 +135,10 @@ describe('LoginPage', () => {
     const error = new Error('any_message')
     jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
     await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
-    const errorWarp = getByTestId('error-wrap')
-    await waitFor(() => errorWarp)
-    expect(errorWarp.childElementCount).toBe(1)
-    expect(errorWarp.textContent).toBe(error.message)
+    const errorWrap = getByTestId('error-wrap')
+    await waitFor(() => errorWrap)
+    expect(errorWrap.childElementCount).toBe(1)
+    expect(errorWrap.textContent).toBe(error.message)
   })
 
   test('should navigate to main page on success', async () => {
