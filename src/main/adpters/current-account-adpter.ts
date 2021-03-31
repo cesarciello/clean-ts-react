@@ -8,3 +8,7 @@ export const setCurrentAccountAdpter = (account: AccountModel): void => {
   }
   makeLocalStorageAdpterFactory().set('account', account)
 }
+
+export const getCurrentAccountAdpter = (): AccountModel => {
+  return makeLocalStorageAdpterFactory().get('account')
+}
