@@ -1,5 +1,6 @@
-import { Footer, Header, Icon, IconName } from '@/presentation/components'
+import { Footer, Header } from '@/presentation/components'
 import React from 'react'
+import { SurveyItemEmpty, SurveyItem } from './components'
 import Styles from './survey-list-styles.scss'
 
 const SurveyList: React.FC = () => {
@@ -9,19 +10,7 @@ const SurveyList: React.FC = () => {
       <section className={Styles.contentWarp}>
         <h2>Enquete</h2>
         <ul>
-          <li>
-            <div className={Styles.surveyContent}>
-              <Icon className={Styles.iconWarp} iconName={IconName.thumbDown} ></Icon>
-              <time>
-                <span className={Styles.day}>22</span>
-                <span className={Styles.month}>02</span>
-                <span className={Styles.year}>2021</span>
-              </time>
-              <p>Qual é seu FrameworkWeb favorito ?</p>
-            </div>
-            <footer>Ver Resultado</footer>
-          </li>
-          <li></li>
+          <SurveyItemEmpty />
         </ul>
       </section>
       <Footer />
