@@ -39,82 +39,82 @@ const makeSut = (): SutTypes => {
 describe('SignUp Page', () => {
   test('should start with correct initial state', () => {
     makeSut()
-    expect(screen.getByTestId('error-wrap').childElementCount).toBe(0)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     const submitButton = screen.getByTestId('submit') as HTMLButtonElement
-    expect(submitButton.disabled).toBe(false)
-    expect(screen.getByTestId('name-input-container').childElementCount).toBe(1)
-    expect(screen.getByTestId('email-input-container').childElementCount).toBe(1)
-    expect(screen.getByTestId('password-input-container').childElementCount).toBe(1)
-    expect(screen.getByTestId('passwordConfirmation-input-container').childElementCount).toBe(1)
+    expect(submitButton).toBeEnabled()
+    expect(screen.getByTestId('name-input-container').children).toHaveLength(1)
+    expect(screen.getByTestId('email-input-container').children).toHaveLength(1)
+    expect(screen.getByTestId('password-input-container').children).toHaveLength(1)
+    expect(screen.getByTestId('passwordConfirmation-input-container').children).toHaveLength(1)
   })
 
   test('should show name error if validation fails', () => {
     const { validationSpy } = makeSut()
     validationSpy.errorMessage = faker.random.words()
     Helper.populateField('name', screen.getByTestId, faker.random.word())
-    expect(screen.getByTestId('name-input-container').childElementCount).toBe(2)
-    expect(screen.getByTestId('name-error').textContent).toBe(validationSpy.errorMessage)
+    expect(screen.getByTestId('name-input-container').children).toHaveLength(2)
+    expect(screen.getByTestId('name-error')).toHaveTextContent(validationSpy.errorMessage)
   })
 
   test('should show email error if validation fails', () => {
     const { validationSpy } = makeSut()
     validationSpy.errorMessage = faker.random.words()
     Helper.populateField('email', screen.getByTestId, faker.random.word())
-    expect(screen.getByTestId('email-input-container').childElementCount).toBe(2)
-    expect(screen.getByTestId('email-error').textContent).toBe(validationSpy.errorMessage)
+    expect(screen.getByTestId('email-input-container').children).toHaveLength(2)
+    expect(screen.getByTestId('email-error')).toHaveTextContent(validationSpy.errorMessage)
   })
 
   test('should show password error if validation fails', () => {
     const { validationSpy } = makeSut()
     validationSpy.errorMessage = faker.random.words()
     Helper.populateField('password', screen.getByTestId, faker.random.word())
-    expect(screen.getByTestId('password-input-container').childElementCount).toBe(2)
-    expect(screen.getByTestId('password-error').textContent).toBe(validationSpy.errorMessage)
+    expect(screen.getByTestId('password-input-container').children).toHaveLength(2)
+    expect(screen.getByTestId('password-error')).toHaveTextContent(validationSpy.errorMessage)
   })
 
   test('should show passwordConfirmation error if validation fails', () => {
     const { validationSpy } = makeSut()
     validationSpy.errorMessage = faker.random.words()
     Helper.populateField('passwordConfirmation', screen.getByTestId, faker.random.word())
-    expect(screen.getByTestId('passwordConfirmation-input-container').childElementCount).toBe(2)
-    expect(screen.getByTestId('passwordConfirmation-error').textContent).toBe(validationSpy.errorMessage)
+    expect(screen.getByTestId('passwordConfirmation-input-container').children).toHaveLength(2)
+    expect(screen.getByTestId('passwordConfirmation-error')).toHaveTextContent(validationSpy.errorMessage)
   })
 
   test('should show valid name state if Validation succeds', () => {
     makeSut()
     Helper.populateField('name', screen.getByTestId, faker.random.word())
-    expect(screen.getByTestId('name-input-container').childElementCount).toBe(1)
+    expect(screen.getByTestId('name-input-container').children).toHaveLength(1)
   })
 
   test('should show valid email state if Validation succeds', () => {
     makeSut()
     Helper.populateField('email', screen.getByTestId, faker.random.word())
-    expect(screen.getByTestId('email-input-container').childElementCount).toBe(1)
+    expect(screen.getByTestId('email-input-container').children).toHaveLength(1)
   })
 
   test('should show valid password state if Validation succeds', () => {
     makeSut()
     Helper.populateField('password', screen.getByTestId, faker.random.word())
-    expect(screen.getByTestId('password-input-container').childElementCount).toBe(1)
+    expect(screen.getByTestId('password-input-container').children).toHaveLength(1)
   })
 
   test('should show valid passwordConfirmation state if Validation succeds', () => {
     makeSut()
     Helper.populateField('passwordConfirmation', screen.getByTestId, faker.random.word())
-    expect(screen.getByTestId('passwordConfirmation-input-container').childElementCount).toBe(1)
+    expect(screen.getByTestId('passwordConfirmation-input-container').children).toHaveLength(1)
   })
 
   test('should enable button if form is valid', () => {
     makeSut()
     Helper.populateListField(screen.getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }])
     const submitButton = screen.getByTestId('submit') as HTMLButtonElement
-    expect(submitButton.disabled).toBe(false)
+    expect(submitButton).toBeEnabled()
   })
 
   test('should show spinner on submit', async () => {
     makeSut()
     await Helper.simulateValidSubmit(screen.getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
-    expect(screen.getByTestId('spinner')).toBeTruthy()
+    expect(screen.queryByTestId('spinner')).toBeInTheDocument()
   })
 
   test('should calls AddAccount with correct values', async () => {
@@ -152,8 +152,8 @@ describe('SignUp Page', () => {
     await Helper.simulateValidSubmit(screen.getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
     const errorWrap = screen.getByTestId('error-wrap')
     await waitFor(() => errorWrap)
-    expect(errorWrap.childElementCount).toBe(1)
-    expect(screen.getByTestId('errorMessage').textContent).toBe(error.message)
+    expect(errorWrap.children).toHaveLength(1)
+    expect(screen.getByTestId('errorMessage')).toHaveTextContent(error.message)
   })
 
   test('should call UpdateCurrentAccount on success', async () => {
