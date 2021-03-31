@@ -1,12 +1,12 @@
 import { Link, useHistory } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import Styles from './signup-styles.scss'
 import Context from '@/presentation/context/form-login/form-login-context'
 import { Footer, LoginHeader, Input, FormStatusLogin, SubmitButton } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
 import { AddAccount } from '@/domain/usecases/add-account'
-import { UpdateCurrentAccount } from '@/domain/usecases/update-current-account'
+import ApiContext from '@/presentation/context/api/api-context'
 
 type StateProps = {
   name: string
@@ -25,10 +25,10 @@ type StateProps = {
 type Props = {
   validation: Validation
   addAccount: AddAccount
-  updateCurrentAccount: UpdateCurrentAccount
 }
 
-const SignUp: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
+  const { setCurrentAccount } = useContext(ApiContext)
   const history = useHistory()
 
   const [state, setState] = useState<StateProps>({
@@ -76,7 +76,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount 
         password: state.password,
         passwordConfirmation: state.passwordConfirmation
       })
-      await updateCurrentAccount.save(account)
+      setCurrentAccount(account)
       history.replace('/')
     } catch (error) {
       setState({

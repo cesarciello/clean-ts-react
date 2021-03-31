@@ -5,32 +5,36 @@ import { createMemoryHistory } from 'history'
 import { render, RenderResult, cleanup, fireEvent, waitFor } from '@testing-library/react'
 
 import { SignUp } from '..'
-import { ValidationSpy, Helper, AddAccountSpy, UpdateCurrentAccountStub } from '@/presentation/test'
 import { EmailInUseError } from '@/domain/errors'
+import { AccountModel } from '@/domain/models/account-model'
+import ApiContext from '@/presentation/context/api/api-context'
+import { ValidationSpy, Helper, AddAccountSpy } from '@/presentation/test'
 
 type SutTypes = {
   sut: RenderResult
   validationSpy: ValidationSpy
   addAccountSpy: AddAccountSpy
-  updateCurrentAccountStub: UpdateCurrentAccountStub
+  setCurrentAccountMock: (account: AccountModel) => void
 }
 
 const history = createMemoryHistory({ initialEntries: ['/signup'] })
 
 const makeSut = (): SutTypes => {
-  const updateCurrentAccountStub = new UpdateCurrentAccountStub()
+  const setCurrentAccountMock = jest.fn()
   const addAccountSpy = new AddAccountSpy()
   const validationSpy = new ValidationSpy()
   const sut = render(
-    <Router history={history}>
-      <SignUp validation={validationSpy} addAccount={addAccountSpy} updateCurrentAccount={updateCurrentAccountStub} />
-    </Router>
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+      <Router history={history}>
+        <SignUp validation={validationSpy} addAccount={addAccountSpy} />
+      </Router>
+    </ApiContext.Provider>
   )
   return {
     sut,
     validationSpy,
     addAccountSpy,
-    updateCurrentAccountStub
+    setCurrentAccountMock
   }
 }
 
@@ -157,31 +161,9 @@ describe('SignUp Page', () => {
   })
 
   test('should call UpdateCurrentAccount on success', async () => {
-    const { sut: { getByTestId }, addAccountSpy, updateCurrentAccountStub } = makeSut()
+    const { sut: { getByTestId }, addAccountSpy, setCurrentAccountMock } = makeSut()
     await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
-    expect(updateCurrentAccountStub.account).toBe(addAccountSpy.account)
-  })
-
-  test('should show error message if UpdateCurrentAccount fails', async () => {
-    const { sut: { getByTestId }, updateCurrentAccountStub } = makeSut()
-    const error = new Error('any_message')
-    jest.spyOn(updateCurrentAccountStub, 'save').mockRejectedValueOnce(error)
-    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
-    const errorWrap = getByTestId('error-wrap')
-    await waitFor(() => errorWrap)
-    expect(errorWrap.childElementCount).toBe(1)
-    expect(getByTestId('errorMessage').textContent).toBe(error.message)
-  })
-
-  test('should show error message if UpdateCurrentAccount fails', async () => {
-    const { sut: { getByTestId }, updateCurrentAccountStub } = makeSut()
-    const error = new Error('any_message')
-    jest.spyOn(updateCurrentAccountStub, 'save').mockRejectedValueOnce(error)
-    await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'name' }, { fieldName: 'email' }, { fieldName: 'password' }, { fieldName: 'passwordConfirmation' }], 'submit')
-    const errorWrap = getByTestId('error-wrap')
-    await waitFor(() => errorWrap)
-    expect(errorWrap.childElementCount).toBe(1)
-    expect(getByTestId('errorMessage').textContent).toBe(error.message)
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(addAccountSpy.account)
   })
 
   test('should navigate to main page on success', async () => {

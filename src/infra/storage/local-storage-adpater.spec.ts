@@ -21,8 +21,8 @@ describe('LocalStorageAdpter', () => {
   test('should calls localStorage with correct values', async () => {
     const { sut } = makeSut()
     const key = faker.database.column()
-    const value = faker.random.word()
+    const value = faker.random.objectElement<{ name: string }>()
     sut.set(key, value)
-    expect(localStorage.setItem).toHaveBeenLastCalledWith(key, value)
+    expect(localStorage.setItem).toHaveBeenLastCalledWith(key, JSON.stringify(value))
   })
 })

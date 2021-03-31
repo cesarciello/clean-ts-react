@@ -1,5 +1,4 @@
 export * from './mock-validation'
 export * as Helper from './form-helper'
 export * from './mock-authentication'
-export * from './mock-update-cuurent-account'
 export * from './mock-add-account'

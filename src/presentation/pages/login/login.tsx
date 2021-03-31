@@ -1,12 +1,12 @@
 import { Link, useHistory } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import Styles from './login-styles.scss'
 import { Authentication } from '@/domain/usecases/authentication'
 import { Validation } from '@/presentation/protocols/validation'
 import Context from '@/presentation/context/form-login/form-login-context'
 import { Footer, LoginHeader, Input, FormStatusLogin, SubmitButton } from '@/presentation/components'
-import { UpdateCurrentAccount } from '@/domain/usecases/update-current-account'
+import ApiContext from '@/presentation/context/api/api-context'
 
 type StateProps = {
   isLoading: boolean
@@ -21,10 +21,10 @@ type StateProps = {
 type Props = {
   validation: Validation
   authentication: Authentication
-  updateCurrentAccount: UpdateCurrentAccount
 }
 
-const Login: React.FC<Props> = ({ validation, authentication, updateCurrentAccount }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+  const { setCurrentAccount } = useContext(ApiContext)
   const history = useHistory()
   const [state, setState] = useState<StateProps>({
     isLoading: false,
@@ -61,8 +61,7 @@ const Login: React.FC<Props> = ({ validation, authentication, updateCurrentAccou
         email: state.email,
         password: state.password
       })
-      console.log({ account })
-      await updateCurrentAccount.save(account)
+      setCurrentAccount(account)
       history.replace('/')
     } catch (error: any) {
       setState({
