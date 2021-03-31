@@ -36,16 +36,17 @@ describe('RemoteAddAccount', () => {
     expect(httpPostClientSpy.body).toEqual(addAccountParams)
   })
 
-  test('should return AccessToken on sucess', async () => {
+  test('should return Account on sucess', async () => {
     const { sut, httpPostClientSpy } = makeSut()
     httpPostClientSpy.httpResponse = {
       statusCode: HttpStatusCode.success,
       body: {
-        accessToken: faker.random.uuid()
+        accessToken: faker.random.uuid(),
+        name: faker.name.findName()
       }
     }
     const httpResponse = await sut.add(mockAddAccountParams())
-    expect(httpResponse.accessToken).toBeTruthy()
+    expect(httpResponse).toBeTruthy()
   })
 
   test('should throw InvalidCredentialsError if HttpPostClient returns 401', async () => {

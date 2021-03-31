@@ -53,7 +53,7 @@ describe('Login', () => {
     HttpHelper.mockLoginNoDataRequest(/login/)
     FormHelper.submitFormLogin()
     FormHelper.ifErrorFlowErrorWrap('Unexpected error. Try again later')
-    cy.window().then(window => assert.isNull(window.localStorage.getItem('accessToken')))
+    cy.window().then(window => assert.isNull(window.localStorage.getItem('account')))
   })
 
   it('should prevent submit call only once', () => {
@@ -69,10 +69,10 @@ describe('Login', () => {
     cy.get('@request.all').should('have.length', 0)
   })
 
-  it('should navegate and SaveAccessToken on success', () => {
+  it('should navegate and UpdateCurrentAccount on success', () => {
     HttpHelper.mockLoginRequest(/login/)
     FormHelper.submitFormLogin()
     cy.url().should('eq', `${baseUrl}/`)
-    cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
+    cy.window().then(window => assert.isOk(window.localStorage.getItem('account')))
   })
 })

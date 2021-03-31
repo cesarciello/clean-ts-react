@@ -61,11 +61,11 @@ describe('SignUp', () => {
     cy.url().should('eq', `${baseUrl}/signup`)
   })
 
-  it('should navegate and SaveAccessToken on success', () => {
+  it('should navegate and UpdateCurrentAccount on success', () => {
     HttpHelper.mockLoginRequest(/signup/)
     FormHelper.submitFormSingup()
     cy.url().should('eq', `${baseUrl}/`)
-    cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
+    cy.window().then(window => assert.isOk(window.localStorage.getItem('account')))
   })
 
   it('should not call submit if invalid form', () => {

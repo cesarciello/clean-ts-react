@@ -6,13 +6,13 @@ import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-libr
 
 import Login from './login'
 import { InvalidCredentialsError } from '@/domain/errors'
-import { ValidationSpy, AuthenticationSpy, SaveAccessTokenMock, Helper } from '@/presentation/test'
+import { ValidationSpy, AuthenticationSpy, UpdateCurrentAccountStub, Helper } from '@/presentation/test'
 
 type SutTypes = {
   sut: RenderResult
   validationSpy: ValidationSpy
   authenticationSpy: AuthenticationSpy
-  saveAccessTokenMock: SaveAccessTokenMock
+  updateCurrentAccountStub: UpdateCurrentAccountStub
 }
 
 const history = createMemoryHistory({ initialEntries: ['/login'] })
@@ -20,17 +20,17 @@ const history = createMemoryHistory({ initialEntries: ['/login'] })
 const makeSut = (): SutTypes => {
   const authenticationSpy = new AuthenticationSpy()
   const validationSpy = new ValidationSpy()
-  const saveAccessTokenMock = new SaveAccessTokenMock()
+  const updateCurrentAccountStub = new UpdateCurrentAccountStub()
   const sut = render(
     <Router history={history}>
-      <Login validation={validationSpy} authentication={authenticationSpy} saveAccessToken={saveAccessTokenMock} />
+      <Login validation={validationSpy} authentication={authenticationSpy} updateCurrentAccount={updateCurrentAccountStub} />
     </Router>
   )
   return {
     sut,
     validationSpy,
     authenticationSpy,
-    saveAccessTokenMock
+    updateCurrentAccountStub
   }
 }
 
@@ -122,18 +122,18 @@ describe('LoginPage', () => {
     expect(errorWrap.textContent).toBe(error.message)
   })
 
-  test('should call SaveAccessToken with correct values', async () => {
-    const { sut: { getByTestId }, authenticationSpy, saveAccessTokenMock } = makeSut()
+  test('should call UpdateCurrentAccount with correct values', async () => {
+    const { sut: { getByTestId }, authenticationSpy, updateCurrentAccountStub } = makeSut()
     await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
-    saveAccessTokenMock.accessToken = authenticationSpy.account.accessToken
+    updateCurrentAccountStub.account = authenticationSpy.account
     await waitFor(() => getByTestId('form'))
-    expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
+    expect(updateCurrentAccountStub.account).toBe(authenticationSpy.account)
   })
 
-  test('should present error if SaveAccessToken fails', async () => {
-    const { sut: { getByTestId }, saveAccessTokenMock } = makeSut()
+  test('should present error if UpdateCurrentAccount fails', async () => {
+    const { sut: { getByTestId }, updateCurrentAccountStub } = makeSut()
     const error = new Error('any_message')
-    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+    jest.spyOn(updateCurrentAccountStub, 'save').mockRejectedValueOnce(error)
     await Helper.simulateValidSubmit(getByTestId, [{ fieldName: 'email' }, { fieldName: 'password' }], 'submit')
     const errorWrap = getByTestId('error-wrap')
     await waitFor(() => errorWrap)

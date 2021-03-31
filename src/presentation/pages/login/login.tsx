@@ -6,7 +6,7 @@ import { Authentication } from '@/domain/usecases/authentication'
 import { Validation } from '@/presentation/protocols/validation'
 import Context from '@/presentation/context/form-login/form-login-context'
 import { Footer, LoginHeader, Input, FormStatusLogin, SubmitButton } from '@/presentation/components'
-import { SaveAccessToken } from '@/domain/usecases/save-acess-token'
+import { UpdateCurrentAccount } from '@/domain/usecases/update-current-account'
 
 type StateProps = {
   isLoading: boolean
@@ -21,10 +21,10 @@ type StateProps = {
 type Props = {
   validation: Validation
   authentication: Authentication
-  saveAccessToken: SaveAccessToken
+  updateCurrentAccount: UpdateCurrentAccount
 }
 
-const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication, updateCurrentAccount }: Props) => {
   const history = useHistory()
   const [state, setState] = useState<StateProps>({
     isLoading: false,
@@ -61,7 +61,8 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
         email: state.email,
         password: state.password
       })
-      await saveAccessToken.save(account.accessToken)
+      console.log({ account })
+      await updateCurrentAccount.save(account)
       history.replace('/')
     } catch (error: any) {
       setState({
