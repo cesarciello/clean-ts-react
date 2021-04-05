@@ -27,7 +27,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
     <div className={Styles.surveyListWrap}>
       <Header />
       <section className={Styles.contentWarp}>
-        <h2>Enquete</h2>
+        <h2>Surveys</h2>
         <SurveyContext.Provider value={{ state, setState }}>
           {state.error ? <Error /> : <List />}
         </SurveyContext.Provider>

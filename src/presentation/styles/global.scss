@@ -38,6 +38,7 @@ button {
     background-color: $primary;
     cursor: pointer;
     transition: all 0.2s ease-in;
+    padding: 0 1.6rem;
 
     &:hover {
         opacity: .9;
