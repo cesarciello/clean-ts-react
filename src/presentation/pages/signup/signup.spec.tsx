@@ -5,15 +5,15 @@ import { createMemoryHistory } from 'history'
 import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 
 import { SignUp } from '..'
-import { EmailInUseError } from '@/domain/errors'
-import { AccountModel } from '@/domain/models/account-model'
 import ApiContext from '@/presentation/context/api/api-context'
 import { ValidationSpy, Helper, AddAccountSpy } from '@/presentation/test'
+import { EmailInUseError } from '@/domain/errors'
+import { UpdateCurrentAccount } from '@/domain/usecases/update-current-account'
 
 type SutTypes = {
   validationSpy: ValidationSpy
   addAccountSpy: AddAccountSpy
-  setCurrentAccountMock: (account: AccountModel) => void
+  setCurrentAccountMock: (account: UpdateCurrentAccount.Params) => void
 }
 
 const history = createMemoryHistory({ initialEntries: ['/signup'] })

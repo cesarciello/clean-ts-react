@@ -5,14 +5,14 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 
 import PrivateRoute from './private-route'
 import { mockAccountModel } from '@/domain/test'
-import { AccountModel } from '@/domain/models/account-model'
 import ApiContext from '@/presentation/context/api/api-context'
+import { UpdateCurrentAccount } from '@/domain/usecases/update-current-account'
 
 type SutTypes = {
   history: MemoryHistory
 }
 
-const makeSut = (account: AccountModel): SutTypes => {
+const makeSut = (account: UpdateCurrentAccount.Params): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/'] })
   render(
     <ApiContext.Provider value={{ getCurrentAccount: () => account }}>

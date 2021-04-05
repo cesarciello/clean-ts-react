@@ -6,4 +6,6 @@ export interface LoadSurveyList {
 
 export namespace LoadSurveyList {
   export type Result = SurveyModel[]
+
+  export type Model = SurveyModel
 }

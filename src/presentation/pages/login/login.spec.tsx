@@ -6,14 +6,14 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 
 import Login from './login'
 import { InvalidCredentialsError } from '@/domain/errors'
-import { AccountModel } from '@/domain/models/account-model'
 import ApiContext from '@/presentation/context/api/api-context'
 import { ValidationSpy, AuthenticationSpy, Helper } from '@/presentation/test'
+import { UpdateCurrentAccount } from '@/domain/usecases/update-current-account'
 
 type SutTypes = {
   validationSpy: ValidationSpy
   authenticationSpy: AuthenticationSpy
-  setCurrentAccountMock: (account: AccountModel) => void
+  setCurrentAccountMock: (account: UpdateCurrentAccount.Params) => void
 }
 
 const history = createMemoryHistory({ initialEntries: ['/login'] })

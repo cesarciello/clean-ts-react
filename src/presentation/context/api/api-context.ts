@@ -1,9 +1,9 @@
-import { AccountModel } from '@/domain/models/account-model'
+import { UpdateCurrentAccount } from '@/domain/usecases/update-current-account'
 import { createContext } from 'react'
 
 type Props = {
-  setCurrentAccount?: (account: AccountModel) => void
-  getCurrentAccount?: () => AccountModel
+  setCurrentAccount?: (account: UpdateCurrentAccount.Params) => void
+  getCurrentAccount?: () => UpdateCurrentAccount.Params
 }
 
 export default createContext<Props>(null)

@@ -3,14 +3,14 @@ import { screen, render } from '@testing-library/react'
 
 import SurveyItem from './item'
 import { mockSurvey } from '@/domain/test'
-import { SurveyModel } from '@/domain/models/survey-model'
 import { IconName } from '@/presentation/components'
+import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
 
 type SutTypes = {
-  survey: SurveyModel
+  survey: LoadSurveyList.Model
 }
 
-const makeSut = (survey: SurveyModel = mockSurvey()): SutTypes => {
+const makeSut = (survey: LoadSurveyList.Model = mockSurvey()): SutTypes => {
   render(<SurveyItem survey={survey} />)
   return {
     survey
