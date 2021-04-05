@@ -1,6 +1,6 @@
 import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
 import { HttpGetClient } from '@/data/protocols/http/http-get-client'
-import { UnexpectedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpStatusCode } from '@/data/protocols/http'
 
 export class RemoteLoadSurveyList implements LoadSurveyList {
@@ -15,6 +15,7 @@ export class RemoteLoadSurveyList implements LoadSurveyList {
     switch (httpResponse.statusCode) {
       case (HttpStatusCode.success): return remoteSurvey.map(remoteSurvey => Object.assign(remoteSurvey, { date: new Date(remoteSurvey.date) }))
       case (HttpStatusCode.noContent): return []
+      case (HttpStatusCode.forbidden): throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }
   }
