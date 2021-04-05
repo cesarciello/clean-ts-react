@@ -15,6 +15,7 @@ export class AuthorizedHttpGetClientDecorator implements HttpGetClient<any> {
         'x-access-token': account.accessToken
       }
     }
+    console.log(params)
     const httpReponse = await this.httpGetClient.get(params)
     return httpReponse
   }

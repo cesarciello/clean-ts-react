@@ -16,3 +16,19 @@ export const mockSurvey = (): SurveyModel => ({
     }
   ]
 })
+
+export const mockRemoteSurvey = (): any => ({
+  id: faker.random.uuid(),
+  question: faker.random.words(10),
+  date: faker.date.recent().toISOString(),
+  didAnswer: faker.random.boolean(),
+  answers: [
+    {
+      answer: faker.random.words(4)
+    },
+    {
+      answer: faker.random.words(4),
+      image: faker.internet.url()
+    }
+  ]
+})
