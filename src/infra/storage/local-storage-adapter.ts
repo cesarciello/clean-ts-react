@@ -1,7 +1,7 @@
 import { GetStorage } from '@/data/protocols/storage/get-storage'
 import { SetStorage } from '@/data/protocols/storage/set-storage'
 
-export class LocalStorageAdpter implements SetStorage, GetStorage {
+export class LocalStorageAdapter implements SetStorage, GetStorage {
   set(key: string, value: object): void {
     localStorage.setItem(key, JSON.stringify(value))
   }

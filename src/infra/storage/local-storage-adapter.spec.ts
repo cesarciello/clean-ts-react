@@ -1,19 +1,19 @@
 import faker from 'faker'
 import 'jest-localstorage-mock'
 
-import { LocalStorageAdpter } from './local-storage-adpater'
+import { LocalStorageAdapter } from './local-storage-adapter'
 
 type SutTypes = {
-  sut: LocalStorageAdpter
+  sut: LocalStorageAdapter
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new LocalStorageAdpter()
+  const sut = new LocalStorageAdapter()
   return {
     sut
   }
 }
-describe('LocalStorageAdpter', () => {
+describe('LocalStorageAdapter', () => {
   beforeEach(() => {
     localStorage.clear()
   })
