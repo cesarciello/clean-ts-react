@@ -6,7 +6,7 @@ export class LocalUpdateCurrentAccount implements UpdateCurrentAccount {
   constructor(private readonly setStorage: SetStorage) { }
 
   async save(account: UpdateCurrentAccount.Params): Promise<void> {
-    if (!account?.accessToken || !account?.name) {
+    if (!account?.accessToken) {
       throw new UnexpectedError()
     }
     this.setStorage.set('account', account)
