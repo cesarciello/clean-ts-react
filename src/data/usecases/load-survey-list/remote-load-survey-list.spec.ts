@@ -4,6 +4,7 @@ import { HttpStatusCode } from '@/data/protocols/http'
 import { HttpGetClientSpy } from '@/data/test/mock-http'
 import { mockRemoteSurveyList } from '@/domain/test'
 import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
+import { AccessDeniedError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RemoteLoadSurveyList
@@ -37,13 +38,13 @@ describe('RemoteLoadSurveyList', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('should throws UnexpectedError on 403', async () => {
+  test('should throws AccessDeniedError on 403', async () => {
     const { sut, httpGetClientSpy } = makeSut()
     httpGetClientSpy.httpResponse = {
       statusCode: HttpStatusCode.forbidden
     }
     const promise = sut.loadAll()
-    await expect(promise).rejects.toThrow()
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
   test('should throws UnexpectedError on 500', async () => {
