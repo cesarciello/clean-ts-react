@@ -1,6 +1,3 @@
-import faker from 'faker'
-
-import { UnexpectedError } from '@/domain/errors'
 import { mockAccountModel } from '@/domain/test'
 import { LocalStorageAdapter } from '@/infra/storage/local-storage-adapter'
 import { setCurrentAccountAdapter, getCurrentAccountAdapter } from './current-account-adapter'

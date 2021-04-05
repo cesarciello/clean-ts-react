@@ -4,8 +4,8 @@ import { createMemoryHistory } from 'history'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import SurveyList from './survey-list'
-import { mockAccountModel, mockSurveyList } from '@/domain/test'
 import { UnexpectedError } from '@/domain/errors'
+import { mockAccountModel, mockSurveyList } from '@/domain/test'
 import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
 import ApiContext from '@/presentation/context/api/api-context'
 

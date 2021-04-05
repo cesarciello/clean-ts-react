@@ -2,8 +2,8 @@ import React from 'react'
 import { screen, render } from '@testing-library/react'
 
 import SurveyItem from './item'
-import { mockSurvey } from '@/domain/test'
 import { IconName } from '@/presentation/components'
+import { mockSurvey } from '@/domain/test'
 import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
 
 type SutTypes = {

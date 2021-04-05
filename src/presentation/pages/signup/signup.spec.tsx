@@ -4,7 +4,7 @@ import { Router } from 'react-router'
 import { createMemoryHistory } from 'history'
 import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 
-import { SignUp } from '..'
+import SignUp from './signup'
 import ApiContext from '@/presentation/context/api/api-context'
 import { ValidationSpy, Helper, AddAccountSpy } from '@/presentation/test'
 import { EmailInUseError } from '@/domain/errors'

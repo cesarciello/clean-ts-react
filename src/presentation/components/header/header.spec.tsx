@@ -4,9 +4,9 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { Header } from '..'
+import { mockAccountModel } from '@/domain/test'
 import { AccountModel } from '@/domain/models/account-model'
 import ApiContext from '@/presentation/context/api/api-context'
-import { mockAccountModel } from '@/domain/test'
 
 type SutTypes = {
   history: MemoryHistory

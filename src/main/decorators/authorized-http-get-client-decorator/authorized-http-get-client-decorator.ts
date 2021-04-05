@@ -1,5 +1,5 @@
-import { HttpGetClient } from '@/data/protocols/http/http-get-client'
 import { GetStorage } from '@/data/protocols/storage/get-storage'
+import { HttpGetClient } from '@/data/protocols/http/http-get-client'
 
 export class AuthorizedHttpGetClientDecorator implements HttpGetClient<any> {
   constructor(

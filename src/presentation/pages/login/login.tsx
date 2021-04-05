@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import Styles from './login-styles.scss'
 import { Authentication } from '@/domain/usecases/authentication'
+import ApiContext from '@/presentation/context/api/api-context'
 import { Validation } from '@/presentation/protocols/validation'
 import Context from '@/presentation/context/form-login/form-login-context'
 import { Footer, LoginHeader, Input, FormStatusLogin, SubmitButton } from '@/presentation/components'
-import ApiContext from '@/presentation/context/api/api-context'
 
 type StateProps = {
   isLoading: boolean

@@ -1,9 +1,9 @@
+import { useHistory } from 'react-router'
 import React, { memo, useContext } from 'react'
 
-import ApiContext from '@/presentation/context/api/api-context'
-import Logo from '../logo/logo'
 import Styles from './header-styles.scss'
-import { useHistory } from 'react-router'
+import { Logo } from '@/presentation/components'
+import ApiContext from '@/presentation/context/api/api-context'
 
 const Header: React.FC = () => {
   const history = useHistory()
