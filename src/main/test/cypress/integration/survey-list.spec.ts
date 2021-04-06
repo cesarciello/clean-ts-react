@@ -13,4 +13,10 @@ describe('SurveyList', () => {
     cy.visit('')
     cy.getByTestId('error').should('contain.text', 'Unexpected error. Try again later')
   })
+
+  it('should present logout on AccessDeniedError', () => {
+    HttpHelper.mockForbbidenRequest(/surveys/)
+    cy.visit('')
+    cy.url().should('eq', `${baseUrl}/login`)
+  })
 })
