@@ -35,6 +35,7 @@ module.exports = merge(common, {
     writeToDisk: true,
     historyApiFallback: true
   },
+  devtool: 'inline-source-map',
   plugins: [
     new webpack.DefinePlugin({
       'process.env.API_URL': JSON.stringify('http://fordevs.herokuapp.com/api')
