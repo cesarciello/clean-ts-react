@@ -30,7 +30,7 @@ describe('LocalStorageAdapter', () => {
     const { sut } = makeSut()
     const key = faker.database.column()
     sut.set(key, null)
-    expect(localStorage.setItem).toHaveBeenLastCalledWith(key)
+    expect(localStorage.removeItem).toHaveBeenLastCalledWith(key)
   })
 
   test('should calls localStorage.getItem with correct values', async () => {
