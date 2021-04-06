@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import Styles from './survey-list-styles.scss'
 import { SurveyContext, List, Error } from './components'
-import { useErrorHandler } from '@/presentation/hooks'
 import { Footer, Header } from '@/presentation/components'
+import { useAccessDeniedErrorHandler } from '@/presentation/hooks'
 import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 }
 
 const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
-  const handleError = useErrorHandler((error) => setState({ ...state, error: error.message }))
+  const accessDeniedErrorHandler = useAccessDeniedErrorHandler((error) => setState({ ...state, error: error.message }))
   const [state, setState] = useState({
     surveys: [] as LoadSurveyList.Model[],
     error: '',
@@ -21,7 +21,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
   useEffect(() => {
     loadSurveyList.loadAll()
       .then((surveys) => setState({ ...state, surveys }))
-      .catch(handleError)
+      .catch(accessDeniedErrorHandler)
   }, [state.reload])
 
   return (
