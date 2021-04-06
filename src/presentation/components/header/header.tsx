@@ -1,4 +1,3 @@
-import { useHistory } from 'react-router'
 import React, { memo, useContext } from 'react'
 
 import Styles from './header-styles.scss'

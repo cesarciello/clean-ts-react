@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Redirect, Route, RouteProps } from 'react-router'
+import { Redirect, Route, RouteProps } from 'react-router-dom'
 import ApiContext from '@/presentation/context/api/api-context'
 
 const PrivateRoute: React.FC<RouteProps> = (props: RouteProps) => {
