@@ -19,9 +19,18 @@ describe('SurveyList', () => {
     HttpHelper.mockForbbidenRequest(/surveys/)
     cy.visit('')
     cy.url().should('eq', `${baseUrl}/login`)
+    cy.window().then(window => assert.isNotOk(window.localStorage.getItem('account')))
   })
 
-  it('should present correct username', () => {
+  it('should logout on logout link click', () => {
+    HttpHelper.mockForbbidenRequest(/surveys/)
+    cy.visit('')
+    cy.getByTestId('logout').click()
+    cy.url().should('eq', `${baseUrl}/login`)
+    cy.window().then(window => assert.isNotOk(window.localStorage.getItem('account')))
+  })
+
+  it('should present correct username in header', () => {
     HttpHelper.mockForbbidenRequest(/surveys/)
     cy.visit('')
     cy.getByTestId('username').should('contain.text', accoutInLocalStorage.name)
