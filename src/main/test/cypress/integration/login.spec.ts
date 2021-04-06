@@ -49,13 +49,6 @@ describe('Login', () => {
     cy.url().should('eq', `${baseUrl}/login`)
   })
 
-  it('should present UnexpectedError on data response is invalid', () => {
-    HttpHelper.mockLoginNoDataRequest(/login/)
-    FormHelper.submitFormLogin()
-    FormHelper.ifErrorFlowErrorWrap('Unexpected error. Try again later')
-    cy.window().then(window => assert.isNull(window.localStorage.getItem('account')))
-  })
-
   it('should prevent submit call only once', () => {
     HttpHelper.mockLoginRequest(/login/)
     FormHelper.submitFormLogin()
