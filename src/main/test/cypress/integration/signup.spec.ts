@@ -62,20 +62,20 @@ describe('SignUp', () => {
   })
 
   it('should navegate and UpdateCurrentAccount on success', () => {
-    HttpHelper.mockLoginRequest(/signup/)
+    HttpHelper.mockLoginRequestFixtures(/signup/)
     FormHelper.submitFormSingup()
     cy.url().should('eq', `${baseUrl}/`)
     cy.window().then(window => assert.isOk(window.localStorage.getItem('account')))
   })
 
   it('should not call submit if invalid form', () => {
-    HttpHelper.mockLoginRequest(/login/)
+    HttpHelper.mockLoginRequestFixtures(/login/)
     FormHelper.input('email').type(faker.internet.email()).type('{enter}')
     cy.get('@request.all').should('have.length', 0)
   })
 
   it('should prevent submit call only once', () => {
-    HttpHelper.mockLoginRequest(/signup/)
+    HttpHelper.mockLoginRequestFixtures(/signup/)
     FormHelper.submitFormSingup()
     FormHelper.submitButton().click()
     cy.get('@request.all').should('have.length', 1)
