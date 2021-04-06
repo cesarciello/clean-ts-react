@@ -2,7 +2,7 @@ import faker from 'faker'
 import { FormHelper, HttpHelper } from '../utils'
 
 const baseUrl: string = Cypress.config().baseUrl
-const accoutInLocalStorage = { accessToken: faker.random.uuid(), name: faker.name.findName() }
+const accoutInLocalStorage = { accessToken: faker.datatype.uuid(), name: faker.name.findName() }
 
 describe('SurveyList', () => {
   beforeEach(() => {

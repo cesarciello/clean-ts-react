@@ -41,7 +41,7 @@ describe('RemoteAddAccount', () => {
     httpPostClientSpy.httpResponse = {
       statusCode: HttpStatusCode.success,
       body: {
-        accessToken: faker.random.uuid(),
+        accessToken: faker.datatype.uuid(),
         name: faker.name.findName()
       }
     }

@@ -3,7 +3,7 @@ import axios from 'axios'
 import faker from 'faker'
 
 export const mockHttpAxiosResponse = (): any => ({
-  status: faker.random.number(),
+  status: faker.datatype.number(),
   data: faker.random.objectElement()
 })
 
