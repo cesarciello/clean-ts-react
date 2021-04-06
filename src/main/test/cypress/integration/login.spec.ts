@@ -53,6 +53,7 @@ describe('Login', () => {
     HttpHelper.mockLoginRequestFixtures(/login/)
     FormHelper.submitFormLogin()
     FormHelper.submitButton().click()
+    cy.wait('@request')
     cy.get('@request.all').should('have.length', 1)
   })
 

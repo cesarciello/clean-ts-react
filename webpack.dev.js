@@ -33,7 +33,8 @@ module.exports = merge(common, {
   devServer: {
     contentBase: './public',
     writeToDisk: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    port: 8080
   },
   devtool: 'inline-source-map',
   plugins: [
