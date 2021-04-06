@@ -2,10 +2,11 @@ import faker from 'faker'
 import { FormHelper, HttpHelper } from '../utils'
 
 const baseUrl: string = Cypress.config().baseUrl
+const accoutInLocalStorage = { accessToken: faker.random.uuid(), name: faker.name.findName() }
 
 describe('SurveyList', () => {
   beforeEach(() => {
-    localStorage.setItem('account', JSON.stringify({ accessToken: faker.random.uuid(), name: faker.name.findName() }))
+    localStorage.setItem('account', JSON.stringify(accoutInLocalStorage))
   })
 
   it('should present error on UnexpectedError', () => {
@@ -18,5 +19,11 @@ describe('SurveyList', () => {
     HttpHelper.mockForbbidenRequest(/surveys/)
     cy.visit('')
     cy.url().should('eq', `${baseUrl}/login`)
+  })
+
+  it('should present correct username', () => {
+    HttpHelper.mockForbbidenRequest(/surveys/)
+    cy.visit('')
+    cy.getByTestId('username').should('contain.text', accoutInLocalStorage.name)
   })
 })
