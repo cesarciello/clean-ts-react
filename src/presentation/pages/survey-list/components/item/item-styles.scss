@@ -15,6 +15,11 @@
         box-shadow: 0px 3px 20px rgba(51, 51, 51, 0.4);
     }
 
+    .calendarWrap {
+        margin-left: 2.4rem;
+        align-self: center;
+    }
+
     .surveyContent {
         position: relative;
         border-radius: 0.8rem 0.8rem 0 0;
@@ -32,36 +37,6 @@
             position: absolute;
             top: -1rem;
             right: -1rem;
-        }
-
-        time {
-            display: flex;
-            flex-direction: column;
-            background-color: $primaryLight;
-            color: $white;
-            border-radius: .8rem;
-            margin-left: 2.4rem;
-            align-self: center;
-            align-items: center;
-            justify-content: center;
-            width: 6rem;
-            height: 10rem;
-            flex-shrink: 0;
-
-            .day {
-                font-size: 3.6rem;
-                font-weight: bold;
-            }
-
-            .month {
-                font-size: 1.4rem;
-                text-transform: lowercase;
-                margin: 0 0 0.5rem;
-            }
-
-            .year {
-                font-size: 1.6rem;
-            }
         }
 
         p {
