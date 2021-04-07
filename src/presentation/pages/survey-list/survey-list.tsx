@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Styles from './survey-list-styles.scss'
-import { SurveyContext, List } from './components'
+import { List } from './components'
 import { Footer, Header, Error } from '@/presentation/components'
 import { useAccessDeniedErrorHandler } from '@/presentation/hooks'
 import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
@@ -37,9 +37,9 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
       <Header />
       <section className={Styles.contentWarp}>
         <h2>Surveys</h2>
-        <SurveyContext.Provider value={{ state, setState }}>
-          {state.error ? <Error error={state.error} onReload={onReload} /> : <List />}
-        </SurveyContext.Provider>
+        {state.error
+          ? <Error error={state.error} onReload={onReload} />
+          : <List surveys={state.surveys} />}
       </section>
       <Footer />
     </div>
