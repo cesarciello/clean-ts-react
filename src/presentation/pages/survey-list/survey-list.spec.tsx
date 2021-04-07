@@ -4,20 +4,11 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import SurveyList from './survey-list'
-import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
-import { mockAccountModel, mockSurveyList } from '@/domain/test'
-import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
-import ApiContext from '@/presentation/context/api/api-context'
+import { mockAccountModel } from '@/domain/test'
 import { AccountModel } from '@/domain/models/account-model'
-
-class LoadSurveyListSpy implements LoadSurveyList {
-  callsCount: number = 0
-  surveyList = mockSurveyList()
-  async loadAll(): Promise<LoadSurveyList.Result> {
-    this.callsCount++
-    return this.surveyList
-  }
-}
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
+import { LoadSurveyListSpy } from '@/presentation/test'
+import ApiContext from '@/presentation/context/api/api-context'
 
 type SutTypes = {
   history: MemoryHistory
