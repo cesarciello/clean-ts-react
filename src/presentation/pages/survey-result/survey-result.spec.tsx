@@ -3,14 +3,22 @@ import { render, screen, waitFor } from '@testing-library/react'
 
 import SurveyResult from './survey-result'
 import ApiContext from '@/presentation/context/api/api-context'
-import { mockAccountModel } from '@/domain/test'
+import { mockAccountModel, LoadSurveyResultSpy } from '@/domain/test'
 
-const makeSut = (): void => {
+type SutTypes = {
+  loadSurveyResultSpy: LoadSurveyResultSpy
+}
+
+const makeSut = (): SutTypes => {
+  const loadSurveyResultSpy = new LoadSurveyResultSpy()
   render(
     <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
-      <SurveyResult />
+      <SurveyResult loadSurveyResult={loadSurveyResultSpy} />
     </ApiContext.Provider>
   )
+  return {
+    loadSurveyResultSpy
+  }
 }
 
 describe('SurveyResult Component', () => {
@@ -21,5 +29,11 @@ describe('SurveyResult Component', () => {
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
     await waitFor(() => surveyResult)
+  })
+
+  test('should call LoadSurveyResult', async () => {
+    const { loadSurveyResultSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('survey-result'))
+    expect(loadSurveyResultSpy.callsCount).toBe(1)
   })
 })

@@ -1,11 +1,12 @@
 import faker from 'faker'
 
 import { RemoteLoadSurveyResult } from '@/data/usecases/load-survey-result/remote-load-survey-result'
+import { SurveyResultModel } from '../models/survey-result-model'
+import { LoadSurveyResult } from '../usecases/load-survey-result'
 
-export const mockRemoteSurveyResult = (): RemoteLoadSurveyResult.Result => ({
-  id: faker.datatype.uuid(),
+export const mockSurveyResult = (): SurveyResultModel => ({
   question: faker.random.words(10),
-  date: faker.date.recent().toISOString(),
+  date: faker.date.recent(),
   answers: [
     {
       answer: faker.random.words(4),
@@ -22,3 +23,18 @@ export const mockRemoteSurveyResult = (): RemoteLoadSurveyResult.Result => ({
     }
   ]
 })
+
+export const mockRemoteSurveyResult = (): RemoteLoadSurveyResult.Result => ({
+  ...mockSurveyResult(),
+  id: faker.datatype.uuid(),
+  date: faker.date.recent().toISOString()
+})
+
+export class LoadSurveyResultSpy implements LoadSurveyResult {
+  callsCount = 0
+  surveyResult = mockSurveyResult()
+  async load(): Promise<LoadSurveyResult.Result> {
+    this.callsCount++
+    return this.surveyResult
+  }
+}
