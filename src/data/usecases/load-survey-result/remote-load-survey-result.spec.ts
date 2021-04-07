@@ -2,7 +2,7 @@ import faker from 'faker'
 
 import { HttpGetClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { RemoteLoadSurveyResult } from './remote-load-survey-result'
 
 type SutTypes = {
@@ -35,5 +35,14 @@ describe('RemoteLoadSurveyResult', () => {
     }
     const promise = sut.load()
     await expect(promise).rejects.toThrow(new AccessDeniedError())
+  })
+
+  test('should throws UnexpectedError if httpGetClient returns 400', async () => {
+    const { sut, httpGetClientSpy } = makeSut()
+    httpGetClientSpy.httpResponse = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
