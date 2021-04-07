@@ -3,7 +3,6 @@ import { RemoteLoadSurveyList } from './remote-load-survey-list'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { HttpGetClientSpy } from '@/data/test/mock-http'
 import { mockRemoteSurveyList } from '@/domain/test'
-import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
 import { AccessDeniedError } from '@/domain/errors'
 
 type SutTypes = {
