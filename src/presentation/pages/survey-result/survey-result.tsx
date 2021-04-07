@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import FlipMove from 'react-flip-move'
 
 import Styles from './survey-result-styles.scss'
-import { Calendar, Footer, Header, Loading, Spinner } from '@/presentation/components'
+import { LoadSurveyResult } from '@/domain/usecases/load-survey-result'
+import { Calendar, Footer, Header, Loading, Error } from '@/presentation/components'
 
 const Surveyresult: React.FC = () => {
+  const [state] = useState({
+    isLoading: false,
+    error: '',
+    surveyresult: null as LoadSurveyResult.Result
+  })
   return (
     <div className={Styles.surveyResultWrap}>
       <Header />
-      <section className={Styles.contentWarp}>
-        {false &&
+      <section data-testid="survey-result" className={Styles.contentWarp}>
+        {state.surveyresult &&
           <>
             <hgroup>
               <Calendar date={new Date()} className={Styles.calendarWarp} />
@@ -25,7 +31,8 @@ const Surveyresult: React.FC = () => {
             <button>back</button>
           </>
         }
-        {false && <Loading />}
+        {state.isLoading && <Loading />}
+        {state.error && <Error error={state.error} onReload={() => null} />}
       </section>
       <Footer />
     </div>
