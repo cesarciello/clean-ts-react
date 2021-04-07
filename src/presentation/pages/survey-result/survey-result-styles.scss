@@ -15,13 +15,24 @@
         max-width: 80rem;
         width: 100%;
         flex-grow: 1;
-        padding: 4rem;
+        padding: 2rem 4rem;
 
 
-        h2 {
-            color: $primaryDark;
-            font-size: 2.4rem;
-            font-weight: bold;
+        hgroup {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 1.6rem;
+
+            .calendarWarp {
+                margin-right: 1.2rem;
+            }
+
+            h2 {
+                color: $primaryDark;
+                font-size: 2.4rem;
+                font-weight: bold;
+            }
         }
 
         .answerList {
