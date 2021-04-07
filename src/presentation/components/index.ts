@@ -7,3 +7,4 @@ export { default as FormStatusLogin } from './form-status-login/form-status-logi
 export { default as SubmitButton } from './submit-button/submit-button'
 export { default as Header } from './header/header'
 export { default as Icon, IconName } from './icon/icon'
+export { default as Loading } from './loading/loading'
