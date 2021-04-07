@@ -1,4 +1,5 @@
 @import '../../../../styles/colors.scss';
+@import '../../../../styles/animations.scss';
 
 .surveyItemEmpty {
     height: 25rem;
@@ -15,11 +16,11 @@
     overflow: hidden;
     background-repeat: no-repeat;
     background-image:
-        linear-gradient(to right, $skeletonColot, $skeletonColot),
-        linear-gradient(to right, $skeletonColot, $skeletonColot),
-        linear-gradient(to right, $skeletonColot, $skeletonColot),
-        linear-gradient(to right, $skeletonColot, $skeletonColot),
-        linear-gradient(to right, $skeletonColot, $skeletonColot);
+        linear-gradient(to right, $skeletonColor, $skeletonColor),
+        linear-gradient(to right, $skeletonColor, $skeletonColor),
+        linear-gradient(to right, $skeletonColor, $skeletonColor),
+        linear-gradient(to right, $skeletonColor, $skeletonColor),
+        linear-gradient(to right, $skeletonColor, $skeletonColor);
     background-position:
         2.4rem 5.5rem,
         left 0 bottom 0,
@@ -53,12 +54,5 @@
 @media only screen and (max-width: 600px) {
     .surveyItemEmpty {
         flex-basis: auto;
-    }
-}
-
-
-@keyframes shimmer {
-    100% {
-        transform: translateX(100%);
     }
 }
