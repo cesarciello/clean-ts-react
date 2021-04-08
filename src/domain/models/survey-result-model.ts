@@ -1,10 +1,10 @@
 export interface SurveyResultModel {
   question: string
   date: Date
-  answers: SurveyRsultAnswer[]
+  answers: SurveyResultAnswer[]
 }
 
-interface SurveyRsultAnswer {
+export interface SurveyResultAnswer {
   image?: string
   answer: string
   count: number
