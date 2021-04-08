@@ -5,12 +5,20 @@ import Styles from './survey-result-styles.scss'
 import { LoadSurveyResult } from '@/domain/usecases/load-survey-result'
 import { Calendar, Footer, Header, Loading, Error } from '@/presentation/components'
 import { LoadSurveyResultSpy } from '@/domain/test'
+import { useAccessDeniedErrorHandler } from '@/presentation/hooks'
 
 type Props = {
   loadSurveyResult: LoadSurveyResult
 }
 
 const Surveyresult: React.FC<Props> = ({ loadSurveyResult = new LoadSurveyResultSpy() }: Props) => {
+  const accessDeniedErrorHandler = useAccessDeniedErrorHandler((error) => {
+    setState(old => ({
+      ...old,
+      error: error.message,
+      surveyResult: null
+    }))
+  })
   const [state, setState] = useState({
     isLoading: false,
     error: '',
@@ -23,9 +31,9 @@ const Surveyresult: React.FC<Props> = ({ loadSurveyResult = new LoadSurveyResult
         setState(old => ({
           ...old,
           surveyResult
-        })
-        )
+        }))
       })
+      .catch(accessDeniedErrorHandler)
   }, [])
 
   return (
