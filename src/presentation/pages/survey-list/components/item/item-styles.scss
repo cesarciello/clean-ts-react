@@ -47,7 +47,7 @@
         }
     }
 
-    footer {
+    a {
         font-size: 1.4rem;
         background-color: $primary;
         color: $white;
@@ -56,6 +56,11 @@
         border-radius: 0 0 0.8rem 0.8rem;
         cursor: pointer;
         transition: backgroud-color 500ms ease;
+        text-decoration: none;
+
+        footer {
+            color: $white;
+        }
 
         &:hover {
             background-color: $primaryDark;
