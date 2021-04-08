@@ -6,6 +6,7 @@ import { LoadSurveyResult } from '@/domain/usecases/load-survey-result'
 import { Calendar, Footer, Header, Loading, Error } from '@/presentation/components'
 import { LoadSurveyResultSpy } from '@/domain/test'
 import { useAccessDeniedErrorHandler } from '@/presentation/hooks'
+import { useHistory } from 'react-router'
 
 type Props = {
   loadSurveyResult: LoadSurveyResult
@@ -18,6 +19,8 @@ const Surveyresult: React.FC<Props> = ({ loadSurveyResult = new LoadSurveyResult
     surveyResult: null as LoadSurveyResult.Result,
     reload: false
   })
+
+  const { goBack } = useHistory()
 
   const accessDeniedErrorHandler = useAccessDeniedErrorHandler((error) => {
     setState(old => ({
@@ -68,7 +71,7 @@ const Surveyresult: React.FC<Props> = ({ loadSurveyResult = new LoadSurveyResult
                 ))
               }
             </FlipMove>
-            <button>back</button>
+            <button data-testid="back-button" onClick={goBack}>back</button>
           </>
         }
         {state.isLoading && <Loading />}
