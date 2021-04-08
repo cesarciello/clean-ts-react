@@ -17,7 +17,7 @@ type SutTypes = {
 
 const makeSut = (loadSurveyResultSpy = new LoadSurveyResultSpy()): SutTypes => {
   const setCurrentAccountMock = jest.fn()
-  const history = createMemoryHistory({ initialEntries: ['/'] })
+  const history = createMemoryHistory({ initialEntries: ['', '/survey/any_id/results'], initialIndex: 1 })
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
@@ -94,6 +94,13 @@ describe('SurveyResult Component', () => {
     await waitFor(() => screen.queryByTestId('survey-result'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(null)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('should back button redirect to list surveys', async () => {
+    const { history } = makeSut()
+    await waitFor(() => screen.queryByTestId('survey-result'))
+    fireEvent.click(screen.getByTestId('back-button'))
+    expect(history.location.pathname).toBe('/')
   })
 
   test('should call LoadSurveyResult on reload', async () => {
