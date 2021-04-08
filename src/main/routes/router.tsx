@@ -6,8 +6,8 @@ import PrivateRoute from '@/presentation/components/private-route/private-route'
 import { makeLoginPageFactory } from '@/main/factories/pages/login/login-factory'
 import { makeSignUpPageFactory } from '@/main/factories/pages/signup/signup-factory'
 import { makeSurveyListPageFactory } from '@/main/factories/pages/survey-list/survey-list-factory'
+import { makeSurveyResultPageFactory } from '../factories/pages/survey-result/survey-result-factory'
 import { setCurrentAccountAdapter, getCurrentAccountAdapter } from '@/main/adapters/current-account-adapter'
-import { SurveyResult } from '@/presentation/pages'
 
 const Router: React.FC = () => {
   return (
@@ -19,8 +19,8 @@ const Router: React.FC = () => {
         <Switch>
           <Route path="/login" exact component={makeLoginPageFactory} />
           <Route path="/signup" exact component={makeSignUpPageFactory} />
-          <PrivateRoute path="/surveys" exact component={SurveyResult} />
           <PrivateRoute path="/" exact component={makeSurveyListPageFactory} />
+          <PrivateRoute path="/surveys/:id" component={makeSurveyResultPageFactory} />
         </Switch>
       </BrowserRouter>
     </ApiContext.Provider>
