@@ -12,6 +12,13 @@ type Props = {
 }
 
 const Surveyresult: React.FC<Props> = ({ loadSurveyResult = new LoadSurveyResultSpy() }: Props) => {
+  const [state, setState] = useState({
+    isLoading: false,
+    error: '',
+    surveyResult: null as LoadSurveyResult.Result,
+    reload: false
+  })
+
   const accessDeniedErrorHandler = useAccessDeniedErrorHandler((error) => {
     setState(old => ({
       ...old,
@@ -19,11 +26,15 @@ const Surveyresult: React.FC<Props> = ({ loadSurveyResult = new LoadSurveyResult
       surveyResult: null
     }))
   })
-  const [state, setState] = useState({
-    isLoading: false,
-    error: '',
-    surveyResult: null as LoadSurveyResult.Result
-  })
+
+  const onReload = (): void => {
+    setState(old => ({
+      surveyResult: null as LoadSurveyResult.Result,
+      error: '',
+      isLoading: false,
+      reload: !old.reload
+    }))
+  }
 
   useEffect(() => {
     loadSurveyResult.load()
@@ -34,7 +45,7 @@ const Surveyresult: React.FC<Props> = ({ loadSurveyResult = new LoadSurveyResult
         }))
       })
       .catch(accessDeniedErrorHandler)
-  }, [])
+  }, [state.reload])
 
   return (
     <div className={Styles.surveyResultWrap}>
@@ -61,7 +72,7 @@ const Surveyresult: React.FC<Props> = ({ loadSurveyResult = new LoadSurveyResult
           </>
         }
         {state.isLoading && <Loading />}
-        {state.error && <Error error={state.error} onReload={() => null} />}
+        {state.error && <Error error={state.error} onReload={onReload} />}
       </section>
       <Footer />
     </div>
