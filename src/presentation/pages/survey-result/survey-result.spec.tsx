@@ -4,6 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import SurveyResult from './survey-result'
 import ApiContext from '@/presentation/context/api/api-context'
 import { mockAccountModel, LoadSurveyResultSpy, mockSurveyResult } from '@/domain/test'
+import { UnexpectedError } from '@/domain/errors'
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
@@ -62,5 +63,16 @@ describe('SurveyResult Component', () => {
     const percents = screen.queryAllByTestId('percent')
     expect(percents[0]).toHaveTextContent(`${loadSurveyResultSpy.surveyResult.answers[0].percent}%`)
     expect(percents[1]).toHaveTextContent(`${loadSurveyResultSpy.surveyResult.answers[1].percent}%`)
+  })
+
+  test('should render error message on failure', async () => {
+    const loadSurveyResultSpy = new LoadSurveyResultSpy()
+    const error = new UnexpectedError()
+    jest.spyOn(loadSurveyResultSpy, 'load').mockRejectedValueOnce(error)
+    makeSut(loadSurveyResultSpy)
+    await waitFor(() => screen.getByTestId('survey-result'))
+    expect(screen.queryByTestId('question')).not.toBeInTheDocument()
+    expect(screen.getByTestId('error')).toHaveTextContent(error.message)
+    expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
   })
 })
