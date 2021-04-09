@@ -8,12 +8,6 @@ export const mockHttpRequest = (): HttpClient.Params => ({
   headers: faker.random.objectElement()
 })
 
-export const mockPostRequest = (): HttpClient.Params => ({
-  method: 'post',
-  url: faker.internet.url(),
-  body: faker.random.objectElement()
-})
-
 export const mockGetRequest = (): HttpClient.Params => ({
   method: 'get',
   url: faker.internet.url(),
