@@ -1,7 +1,7 @@
 import { HttpClient } from '@/data/protocols/http'
 import { SurveyResultModel } from '@/domain/models/survey-result-model'
 import { SaveSurveyResult } from '@/domain/usecases/save-survey-result'
-import { RemoteSurveyResult } from '../models/remote-survey-result'
+import { RemoteSurveyResult } from '../../models/remote-survey-result'
 
 export class RemoteSaveSurveyResult implements SaveSurveyResult {
   constructor(
