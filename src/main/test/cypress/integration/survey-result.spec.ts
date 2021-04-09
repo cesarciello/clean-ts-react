@@ -1,6 +1,7 @@
 import faker from 'faker'
 import { HttpHelper } from '../utils'
 
+const baseUrl: string = Cypress.config().baseUrl
 const path = /fordevs.herokuapp.com\/api\/surveys/
 const accoutInLocalStorage = { accessToken: faker.datatype.uuid(), name: faker.name.findName() }
 
@@ -23,5 +24,12 @@ describe('SurveyResult', () => {
     cy.getByTestId('reload').click()
     cy.getByTestId('question').should('have.text', 'Question ?')
     cy.get('li:not(:empty)').should('have.length', 2)
+  })
+
+  it('should present logout on AccessDeniedError', () => {
+    HttpHelper.mockForbbidenRequest(path)
+    cy.visit('surveys/any_id')
+    cy.url().should('eq', `${baseUrl}/login`)
+    cy.window().then(window => assert.isNotOk(window.localStorage.getItem('account')))
   })
 })
