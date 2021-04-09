@@ -51,4 +51,13 @@ describe('RemoteSaveSurveyResult', () => {
     const promise = sut.save(answerToSave)
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  test('should throws UnexpectedError if httpClient returns 400', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.httpResponse = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.save(answerToSave)
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
 })
