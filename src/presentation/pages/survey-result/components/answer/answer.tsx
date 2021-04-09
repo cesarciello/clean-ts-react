@@ -13,9 +13,8 @@ const Answer: React.FC<Props> = ({ answer }: Props) => {
 
   const changeChoiceAnswer = (event: React.MouseEvent<HTMLLIElement, MouseEvent>): void => {
     event.preventDefault()
-    if (!event.currentTarget.classList.contains('active')) {
+    if (!event.currentTarget.classList.contains(Styles.active)) {
       onChangeAnswer(answer.answer)
-      console.log(event)
     }
   }
 

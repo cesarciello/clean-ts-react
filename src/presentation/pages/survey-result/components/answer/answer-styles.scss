@@ -9,10 +9,19 @@
     border-radius: .8rem;
     padding: 1.5em;
     margin-top: 1.4rem;
+    cursor: pointer;
 
     &.active {
-
+        cursor: default;
         box-shadow: 0 0 .5rem .2rem rgba($color: $primaryLight, $alpha: 0.6);
+
+        &:hover {
+            box-shadow: 0 0 .5rem .2rem rgba($color: $primaryLight, $alpha: 0.6);
+        }
+    }
+
+    &:hover {
+        box-shadow: 0 0 .5rem .2rem rgba($color: $primaryLight, $alpha: 0.3);
     }
 
     img {
