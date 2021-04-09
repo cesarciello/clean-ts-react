@@ -1,0 +1,20 @@
+{
+    "question": "Question ?",
+    "date": "2021-04-05T00:00:00",
+    "answers": [
+        {
+            "image": "any_image",
+            "answer": "answer 1 ?",
+            "percent": 0,
+            "count": 0,
+            "isCurrentAccountAnswer": false
+        },
+        {
+            "image": "",
+            "answer": "answer 2 ?",
+            "percent": 100,
+            "count": 1,
+            "isCurrentAccountAnswer": true
+        }
+    ]
+}

@@ -4,9 +4,10 @@ export const mockForbbidenRequest = (url: RegExp): void => (mockHttpRequest(url,
 export const mockInvalidCredentialsRequest = (url: RegExp): void => (mockHttpRequest(url, 401, { error: faker.random.word() }))
 export const mockUnexpectedRequest = (url: RegExp): void => (mockHttpRequest(url, faker.helpers.randomize([400, 404, 500]), { error: faker.random.word() }))
 
-export const mockSurveyListFixtures = (): void => mockHttpRequestWithFixtures(/surveys/, 200, 'survey-list')
+export const mockSurveyListFixtures = (): void => mockHttpRequestWithFixtures(/surveys/, 200, 'load-survey-list')
 
-export const mockSurveyResultFixtures = (path: RegExp): void => mockHttpRequestWithFixtures(path, 200, 'survey-result')
+export const mockLoadSurveyResultFixtures = (path: RegExp): void => mockHttpRequestWithFixtures(path, 200, 'load-survey-result')
+export const mockSaveSurveyResultFixtures = (path: RegExp): void => mockHttpRequestWithFixtures(path, 200, 'save-survey-result')
 
 export const mockLoginNoDataRequest = (url: RegExp): void => (mockHttpRequest(url, 200))
 export const mockLoginRequestFixtures = (url: RegExp): void => (mockHttpRequestWithFixtures(url, 200, 'account'))

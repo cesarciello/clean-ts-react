@@ -21,7 +21,7 @@ describe('SurveyResult', () => {
       HttpHelper.mockUnexpectedRequest(path)
       cy.visit('surveys/any_id')
       cy.getByTestId('error').should('contain.text', 'Unexpected error. Try again later')
-      HttpHelper.mockSurveyResultFixtures(path)
+      HttpHelper.mockLoadSurveyResultFixtures(path)
       cy.getByTestId('reload').click()
       cy.getByTestId('question').should('have.text', 'Question ?')
       cy.get('li:not(:empty)').should('have.length', 2)
@@ -35,7 +35,7 @@ describe('SurveyResult', () => {
     })
 
     it('should present surveyResult items', () => {
-      HttpHelper.mockSurveyResultFixtures(path)
+      HttpHelper.mockLoadSurveyResultFixtures(path)
       cy.visit('surveys/any_id')
       cy.get('section:empty').should('exist')
       cy.get('li:not(:empty)').should('have.length', 2)
@@ -57,7 +57,7 @@ describe('SurveyResult', () => {
 
     it('should redirect to survey list page on back button click', () => {
       cy.visit('')
-      HttpHelper.mockSurveyResultFixtures(path)
+      HttpHelper.mockLoadSurveyResultFixtures(path)
       cy.visit('surveys/any_id')
       cy.getByTestId('back-button').click()
       cy.wait('@request')
@@ -67,7 +67,7 @@ describe('SurveyResult', () => {
 
   describe('save', () => {
     beforeEach(() => {
-      HttpHelper.mockSurveyResultFixtures(path)
+      HttpHelper.mockLoadSurveyResultFixtures(path)
       cy.visit('surveys/any_id')
       cy.wait('@request')
     })
@@ -83,6 +83,33 @@ describe('SurveyResult', () => {
       cy.get('li:nth-child(2)').click()
       cy.url().should('eq', `${baseUrl}/login`)
       cy.window().then(window => assert.isNotOk(window.localStorage.getItem('account')))
+    })
+
+    it('should present surveyResult items', () => {
+      HttpHelper.mockSaveSurveyResultFixtures(path)
+      cy.intercept(path, (req) => {
+        req.reply((res) => {
+          res.send({ statusCode: 200, fixture: 'save-survey-result.json' })
+        })
+      }).as('request-save')
+      cy.get('li:nth-child(2)').click()
+      cy.wait('@request-save')
+
+      cy.get('li:not(:empty)').should('have.length', 2)
+      cy.getByTestId('day').should('have.text', '05')
+      cy.getByTestId('month').should('have.text', 'abr')
+      cy.getByTestId('year').should('have.text', '2021')
+      cy.get('li:nth-child(1)').then(li => {
+        assert.equal(li.find('[data-testid="answer"]').text(), 'answer 1 ?')
+        assert.equal(li.find('[data-testid="percent"]').text(), '0%')
+        assert.equal(li.find('[data-testid="image"]').attr('src'), 'any_image')
+      })
+
+      cy.get('li:nth-child(2)').then(li => {
+        assert.equal(li.find('[data-testid="answer"]').text(), 'answer 2 ?')
+        assert.equal(li.find('[data-testid="percent"]').text(), '100%')
+        assert.notExists(li.find('[data-testid="image"]'))
+      })
     })
   })
 })
