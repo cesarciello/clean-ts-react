@@ -53,4 +53,13 @@ describe('SurveyResult', () => {
       assert.notExists(li.find('[data-testid="image"]'))
     })
   })
+
+  it('should redirect to survey list page on back button click', () => {
+    cy.visit('')
+    HttpHelper.mockSurveyResultFixtures(path)
+    cy.visit('surveys/any_id')
+    cy.getByTestId('back-button').click()
+    cy.wait('@request')
+    cy.url().should('eq', `${baseUrl}/`)
+  })
 })
