@@ -7,26 +7,28 @@ import SurveyResult from './survey-result'
 import ApiContext from '@/presentation/context/api/api-context'
 import { AccountModel } from '@/domain/models/account-model'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
-import { mockAccountModel, LoadSurveyResultSpy, mockSurveyResult } from '@/domain/test'
+import { mockAccountModel, LoadSurveyResultSpy, mockSurveyResult, SaveSurveyResultSpy } from '@/domain/test'
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
+  saveSurveyResultSpy: SaveSurveyResultSpy
   history: MemoryHistory
   setCurrentAccountMock: (account: AccountModel) => void
 }
 
-const makeSut = (loadSurveyResultSpy = new LoadSurveyResultSpy()): SutTypes => {
+const makeSut = (loadSurveyResultSpy = new LoadSurveyResultSpy(), saveSurveyResultSpy = new SaveSurveyResultSpy()): SutTypes => {
   const setCurrentAccountMock = jest.fn()
   const history = createMemoryHistory({ initialEntries: ['', '/survey/any_id'], initialIndex: 1 })
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
-        <SurveyResult loadSurveyResult={loadSurveyResultSpy} />
+        <SurveyResult loadSurveyResult={loadSurveyResultSpy} saveSurveyResult={saveSurveyResultSpy} />
       </Router>
     </ApiContext.Provider>
   )
   return {
     loadSurveyResultSpy,
+    saveSurveyResultSpy,
     history,
     setCurrentAccountMock
   }
@@ -113,11 +115,23 @@ describe('SurveyResult Component', () => {
     await waitFor(() => screen.queryByTestId('survey-result'))
   })
 
-  test('should not call SaveSurveyResult on click in answer already is the current', async () => {
+  test('should not call SaveSurveyResult on click in answer already is the current (active)', async () => {
     makeSut()
     await waitFor(() => screen.queryByTestId('survey-result'))
     fireEvent.click(screen.queryAllByTestId('answer-wrap')[0])
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+  })
+
+  test('should call SaveSurveyResult on click in answer not is the current (active)', async () => {
+    const { saveSurveyResultSpy, loadSurveyResultSpy } = makeSut()
+    await waitFor(() => screen.queryByTestId('survey-result'))
+    const answerWrap = screen.queryAllByTestId('answer-wrap')[1]
+    fireEvent.click(answerWrap)
+    expect(screen.queryByTestId('loading')).toBeInTheDocument()
+    expect(saveSurveyResultSpy.callsCount).toBe(1)
+    expect(saveSurveyResultSpy.answer).toEqual({
+      answer: loadSurveyResultSpy.surveyResult.answers[1].answer
+    })
   })
 })

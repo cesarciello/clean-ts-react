@@ -3,6 +3,7 @@ import faker from 'faker'
 import { RemoteLoadSurveyResult } from '@/data/usecases/load-survey-result/remote-load-survey-result'
 import { SurveyResultModel } from '../models/survey-result-model'
 import { LoadSurveyResult } from '../usecases/load-survey-result'
+import { SaveSurveyResult } from '../usecases/save-survey-result'
 
 export const mockSurveyResult = (): SurveyResultModel => ({
   question: faker.random.words(10),
@@ -35,6 +36,18 @@ export class LoadSurveyResultSpy implements LoadSurveyResult {
   surveyResult = mockSurveyResult()
   async load(): Promise<LoadSurveyResult.Result> {
     this.callsCount++
+    return this.surveyResult
+  }
+}
+
+export class SaveSurveyResultSpy implements SaveSurveyResult {
+  surveyResult = mockSurveyResult()
+  answer: any
+  callsCount = 0
+
+  async save(params: SaveSurveyResult.Params): Promise<SurveyResultModel> {
+    this.callsCount++
+    this.answer = params
     return this.surveyResult
   }
 }
