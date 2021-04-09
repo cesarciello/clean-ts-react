@@ -50,7 +50,7 @@ describe('RemoteAddAccount', () => {
     expect(httpResponse).toBeTruthy()
   })
 
-  test('should throw InvalidCredentialsError if HttpPostClient returns 401', async () => {
+  test('should throw InvalidCredentialsError if HttpClient returns 401', async () => {
     const { sut, httpClientSpy } = makeSut()
     httpClientSpy.httpResponse = {
       statusCode: HttpStatusCode.unauthorized
@@ -59,7 +59,7 @@ describe('RemoteAddAccount', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  test('should throw UnexpectedError if HttpPostClient returns 500', async () => {
+  test('should throw UnexpectedError if HttpClient returns 500', async () => {
     const { sut, httpClientSpy } = makeSut()
     httpClientSpy.httpResponse = {
       statusCode: HttpStatusCode.serverError
@@ -68,7 +68,7 @@ describe('RemoteAddAccount', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  test('should throw UnexpectedError if HttpPostClient returns 400', async () => {
+  test('should throw UnexpectedError if HttpClient returns 400', async () => {
     const { sut, httpClientSpy } = makeSut()
     httpClientSpy.httpResponse = {
       statusCode: HttpStatusCode.badRequest
@@ -77,7 +77,7 @@ describe('RemoteAddAccount', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  test('should throw EmailInUseError if HttpPostClient returns 403', async () => {
+  test('should throw EmailInUseError if HttpClient returns 403', async () => {
     const { sut, httpClientSpy } = makeSut()
     httpClientSpy.httpResponse = {
       statusCode: HttpStatusCode.forbidden

@@ -22,7 +22,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('RemoteLoadSurveyList', () => {
-  test('should call HttpGetClient with correct url and method', async () => {
+  test('should call HttpClient with correct url and method', async () => {
     const { sut, httpClientSpy } = makeSut()
     await sut.loadAll()
     expect(httpClientSpy.url).toBe(url)

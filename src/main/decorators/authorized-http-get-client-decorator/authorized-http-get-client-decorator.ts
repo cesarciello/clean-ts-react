@@ -4,7 +4,7 @@ import { HttpClient } from '@/data/protocols/http'
 export class AuthorizedHttpClientDecorator implements HttpClient<any> {
   constructor(
     private readonly getStorage: GetStorage,
-    private readonly httpGetClient: HttpClient<any>
+    private readonly httpClient: HttpClient<any>
   ) { }
 
   async request(params: HttpClient.Params): Promise<HttpClient.Response<any>> {
@@ -15,7 +15,7 @@ export class AuthorizedHttpClientDecorator implements HttpClient<any> {
         'x-access-token': account.accessToken
       }
     }
-    const httpReponse = await this.httpGetClient.request(params)
+    const httpReponse = await this.httpClient.request(params)
     return httpReponse
   }
 }

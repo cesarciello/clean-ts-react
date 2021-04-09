@@ -5,11 +5,11 @@ import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 export class RemoteLoadSurveyList implements LoadSurveyList {
   constructor(
     private readonly url: string,
-    private readonly httpGetClient: HttpClient<RemoteLoadSurveyList.Result[]>
+    private readonly httpClient: HttpClient<RemoteLoadSurveyList.Result[]>
   ) { }
 
   async loadAll(): Promise<LoadSurveyList.Result> {
-    const httpResponse = await this.httpGetClient.request({ url: this.url, method: 'get' })
+    const httpResponse = await this.httpClient.request({ url: this.url, method: 'get' })
     const remoteSurvey = httpResponse.body || []
     switch (httpResponse.statusCode) {
       case (HttpStatusCode.success): return remoteSurvey.map(remoteSurvey => Object.assign(remoteSurvey, { date: new Date(remoteSurvey.date) }))

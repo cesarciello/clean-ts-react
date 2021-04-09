@@ -5,11 +5,11 @@ import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 export class RemoteAuthentication implements Authentication {
   constructor(
     private readonly url: string,
-    private readonly httpPostClient: HttpClient<Authentication.Result>
+    private readonly httpClient: HttpClient<Authentication.Result>
   ) { }
 
   async auth(params: Authentication.Params): Promise<Authentication.Result> {
-    const httpReponse = await this.httpPostClient.request({
+    const httpReponse = await this.httpClient.request({
       method: 'post',
       url: this.url,
       body: params

@@ -6,11 +6,11 @@ import { RemoteSurveyResult } from '../models/remote-survey-result'
 export class RemoteLoadSurveyResult implements LoadSurveyResult {
   constructor(
     private readonly url: string,
-    private readonly httpGetClient: HttpClient<RemoteLoadSurveyResult.Result>
+    private readonly httpClient: HttpClient<RemoteLoadSurveyResult.Result>
   ) { }
 
   async load(): Promise<LoadSurveyResult.Result> {
-    const httpResponse = await this.httpGetClient.request({ url: this.url, method: 'get' })
+    const httpResponse = await this.httpClient.request({ url: this.url, method: 'get' })
 
     switch (httpResponse.statusCode) {
       case HttpStatusCode.success: return { ...httpResponse.body, date: new Date(httpResponse.body.date) }
