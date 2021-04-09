@@ -4,7 +4,7 @@ import { HttpClientSpy } from '@/data/test'
 import { RemoteSaveSurveyResult } from './remote-save-survey-result'
 import { mockRemoteSurveyResult } from '@/domain/test/mock-survey-result'
 import { HttpStatusCode } from '@/data/protocols/http'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RemoteSaveSurveyResult
@@ -41,5 +41,14 @@ describe('RemoteSaveSurveyResult', () => {
     }
     const promise = sut.save(answerToSave)
     await expect(promise).rejects.toThrow(new AccessDeniedError())
+  })
+
+  test('should throws UnexpectedError if httpClient returns 500', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.httpResponse = {
+      statusCode: HttpStatusCode.serverError
+    }
+    const promise = sut.save(answerToSave)
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
