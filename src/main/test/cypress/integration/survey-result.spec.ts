@@ -77,5 +77,12 @@ describe('SurveyResult', () => {
       cy.get('li:nth-child(2)').click()
       cy.getByTestId('error').should('contain.text', 'Unexpected error. Try again later')
     })
+
+    it('should present logout on AccessDeniedError', () => {
+      HttpHelper.mockForbbidenRequest(path)
+      cy.get('li:nth-child(2)').click()
+      cy.url().should('eq', `${baseUrl}/login`)
+      cy.window().then(window => assert.isNotOk(window.localStorage.getItem('account')))
+    })
   })
 })
