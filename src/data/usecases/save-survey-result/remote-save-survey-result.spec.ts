@@ -5,15 +5,16 @@ import { HttpClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { mockRemoteSurveyResult } from '@/domain/test/mock-survey-result'
+import { SaveSurveyResult } from '@/domain/usecases/save-survey-result'
 
 type SutTypes = {
   sut: RemoteSaveSurveyResult
   httpClientSpy: HttpClientSpy<any>
 }
 
-const answerToSave = {
+const mockAddSaveSurveyResult = (): SaveSurveyResult.Params => ({
   answer: faker.random.words()
-}
+})
 const url = faker.internet.url()
 
 const makeSut = (): SutTypes => {
@@ -29,10 +30,11 @@ const makeSut = (): SutTypes => {
 describe('RemoteSaveSurveyResult', () => {
   test('should call httpClient with correct url, method and body', async () => {
     const { sut, httpClientSpy } = makeSut()
-    await sut.save(answerToSave)
+    const paramsAddSurveyResult = mockAddSaveSurveyResult()
+    await sut.save(paramsAddSurveyResult)
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.method).toBe('put')
-    expect(httpClientSpy.body).toEqual(answerToSave)
+    expect(httpClientSpy.body).toEqual(paramsAddSurveyResult)
   })
 
   test('should throws AccessDeniedError if httpClient returns 403', async () => {
@@ -40,7 +42,7 @@ describe('RemoteSaveSurveyResult', () => {
     httpClientSpy.httpResponse = {
       statusCode: HttpStatusCode.forbidden
     }
-    const promise = sut.save(answerToSave)
+    const promise = sut.save(mockAddSaveSurveyResult())
     await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
@@ -49,7 +51,7 @@ describe('RemoteSaveSurveyResult', () => {
     httpClientSpy.httpResponse = {
       statusCode: HttpStatusCode.serverError
     }
-    const promise = sut.save(answerToSave)
+    const promise = sut.save(mockAddSaveSurveyResult())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -58,7 +60,7 @@ describe('RemoteSaveSurveyResult', () => {
     httpClientSpy.httpResponse = {
       statusCode: HttpStatusCode.badRequest
     }
-    const promise = sut.save(answerToSave)
+    const promise = sut.save(mockAddSaveSurveyResult())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -69,7 +71,7 @@ describe('RemoteSaveSurveyResult', () => {
       statusCode: HttpStatusCode.success,
       body: httpReponseBody
     }
-    const savedSurveyResult = await sut.save(answerToSave)
+    const savedSurveyResult = await sut.save(mockAddSaveSurveyResult())
     expect(savedSurveyResult).toEqual({ ...httpReponseBody, date: new Date(httpReponseBody.date) })
   })
 })
