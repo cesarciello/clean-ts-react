@@ -27,11 +27,12 @@ const makeSut = (): SutTypes => {
 }
 
 describe('RemoteSaveSurveyResult', () => {
-  test('should call httpClient with correct url and method', async () => {
+  test('should call httpClient with correct url, method and body', async () => {
     const { sut, httpClientSpy } = makeSut()
     await sut.save(answerToSave)
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.method).toBe('put')
+    expect(httpClientSpy.body).toEqual(answerToSave)
   })
 
   test('should throws AccessDeniedError if httpClient returns 403', async () => {
