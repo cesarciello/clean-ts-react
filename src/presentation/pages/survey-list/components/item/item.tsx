@@ -18,7 +18,7 @@ const SurveyItem: React.FC<Props> = ({ survey }: Props) => {
         <Calendar date={survey.date} className={Styles.calendarWrap} />
         <p data-testid="question" >{survey.question}</p>
       </div>
-      <Link data-testid="result" to={`/surveys/${survey.id}/results`}>
+      <Link data-testid="result" to={`/surveys/${survey.id}`}>
         <footer>
           Results
       </footer>

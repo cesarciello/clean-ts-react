@@ -57,6 +57,6 @@ describe('SurveyItem', () => {
   test('should redirect to survey result', async () => {
     const { history, survey: { id } } = makeSut()
     fireEvent.click(screen.getByTestId('result'))
-    expect(history.location.pathname).toBe(`/surveys/${id}/results`)
+    expect(history.location.pathname).toBe(`/surveys/${id}`)
   })
 })

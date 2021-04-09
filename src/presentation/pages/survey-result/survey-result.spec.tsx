@@ -17,7 +17,7 @@ type SutTypes = {
 
 const makeSut = (loadSurveyResultSpy = new LoadSurveyResultSpy()): SutTypes => {
   const setCurrentAccountMock = jest.fn()
-  const history = createMemoryHistory({ initialEntries: ['', '/survey/any_id/results'], initialIndex: 1 })
+  const history = createMemoryHistory({ initialEntries: ['', '/survey/any_id'], initialIndex: 1 })
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
