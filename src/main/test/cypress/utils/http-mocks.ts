@@ -6,6 +6,8 @@ export const mockUnexpectedRequest = (url: RegExp): void => (mockHttpRequest(url
 
 export const mockSurveyListFixtures = (): void => mockHttpRequestWithFixtures(/surveys/, 200, 'survey-list')
 
+export const mockSurveyResultFixtures = (path: RegExp): void => mockHttpRequestWithFixtures(path, 200, 'survey-result')
+
 export const mockLoginNoDataRequest = (url: RegExp): void => (mockHttpRequest(url, 200))
 export const mockLoginRequestFixtures = (url: RegExp): void => (mockHttpRequestWithFixtures(url, 200, 'account'))
 
