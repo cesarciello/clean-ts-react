@@ -7,18 +7,21 @@ import { RemoteSurveyResult } from '../../models/remote-survey-result'
 export class RemoteSaveSurveyResult implements SaveSurveyResult {
   constructor(
     private readonly url: string,
-    private readonly httpClient: HttpClient<any>
+    private readonly httpClient: HttpClient<SaveSurveyResult.Result>
   ) { }
 
   async save(params: SaveSurveyResult.Params): Promise<SurveyResultModel> {
-    const httpResponse = await this.httpClient.request({
+    const { statusCode, body } = await this.httpClient.request({
       method: 'put',
       url: this.url,
       body: params
     })
 
-    switch (httpResponse.statusCode) {
-      case HttpStatusCode.success: return null
+    switch (statusCode) {
+      case HttpStatusCode.success: return {
+        ...body,
+        date: new Date(body.date)
+      }
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }
