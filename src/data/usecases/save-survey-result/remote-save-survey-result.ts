@@ -1,8 +1,8 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
+import { RemoteSurveyResult } from '@/data/models/remote-survey-result'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { SurveyResultModel } from '@/domain/models/survey-result-model'
 import { SaveSurveyResult } from '@/domain/usecases/save-survey-result'
-import { RemoteSurveyResult } from '../../models/remote-survey-result'
 
 export class RemoteSaveSurveyResult implements SaveSurveyResult {
   constructor(
