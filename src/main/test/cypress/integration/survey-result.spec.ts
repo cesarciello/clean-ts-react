@@ -32,4 +32,25 @@ describe('SurveyResult', () => {
     cy.url().should('eq', `${baseUrl}/login`)
     cy.window().then(window => assert.isNotOk(window.localStorage.getItem('account')))
   })
+
+  it('should present surveyResult items', () => {
+    HttpHelper.mockSurveyResultFixtures(path)
+    cy.visit('surveys/any_id')
+    cy.get('section:empty').should('exist')
+    cy.get('li:not(:empty)').should('have.length', 2)
+    cy.getByTestId('day').should('have.text', '05')
+    cy.getByTestId('month').should('have.text', 'abr')
+    cy.getByTestId('year').should('have.text', '2021')
+    cy.get('li:nth-child(1)').then(li => {
+      assert.equal(li.find('[data-testid="answer"]').text(), 'answer 1 ?')
+      assert.equal(li.find('[data-testid="percent"]').text(), '100%')
+      assert.equal(li.find('[data-testid="image"]').attr('src'), 'any_image')
+    })
+
+    cy.get('li:nth-child(2)').then(li => {
+      assert.equal(li.find('[data-testid="answer"]').text(), 'answer 2 ?')
+      assert.equal(li.find('[data-testid="percent"]').text(), '0%')
+      assert.notExists(li.find('[data-testid="image"]'))
+    })
+  })
 })
