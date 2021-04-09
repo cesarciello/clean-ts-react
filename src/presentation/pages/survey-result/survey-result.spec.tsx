@@ -112,4 +112,12 @@ describe('SurveyResult Component', () => {
     expect(loadSurveyResultSpy.callsCount).toBe(1)
     await waitFor(() => screen.queryByTestId('survey-result'))
   })
+
+  test('should not call SaveSurveyResult on click in answer already is the current', async () => {
+    makeSut()
+    await waitFor(() => screen.queryByTestId('survey-result'))
+    fireEvent.click(screen.queryAllByTestId('answer-wrap')[0])
+    expect(screen.queryByTestId('error')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+  })
 })
