@@ -57,7 +57,13 @@ const Surveyresult: React.FC<Props> = ({ loadSurveyResult, saveSurveyResult }: P
       isLoading: true
     }))
     saveSurveyResult.save({ answer })
-      .then()
+      .then(surveyResult => {
+        setState(old => ({
+          ...old,
+          surveyResult,
+          isLoading: false
+        }))
+      })
       .catch(accessDeniedErrorHandler)
   }
 
