@@ -41,7 +41,8 @@ module.exports = merge(common, {
     react: 'React',
     axios: 'axios',
     'react-dom': 'ReactDOM',
-    'react-router-dom': 'ReactRouterDOM'
+    'react-router-dom': 'ReactRouterDOM',
+    'react-router': 'ReactRouterDOM'
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -54,6 +55,7 @@ module.exports = merge(common, {
       filename: 'main-bundle-[fullhash].css'
     }),
     new FaviconsWebpackPlugin({
+      cache: true,
       logo: './public/favicon.png'
     })
   ]

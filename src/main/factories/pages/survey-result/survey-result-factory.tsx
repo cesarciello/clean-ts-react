@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 
 import { SurveyResult } from '@/presentation/pages'
 import { makeRemoteLoadSurveyResultFactory } from '@/main/factories/usecases/load-survey-result/load-survey-result-factory'
